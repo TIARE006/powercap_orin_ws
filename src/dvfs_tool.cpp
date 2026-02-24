@@ -351,15 +351,26 @@ static int cmd_unlock(int argc, char** argv) {
     const std::string gpu_max_p = *gpu_dir + "/max_freq";
     const std::string gov_p     = *gpu_dir + "/governor";
 
-    // Pick GPU max default from available_frequencies (last token), fallback to "infinite"
-    std::string gpu_max_default = "9223372036854775807";
+    // Pick GPU min/max defaults from available_frequencies: first/last token.
+    // Fallbacks: use current min/max if readable; else conservative values.
+    std::string gpu_min_default;
+    std::string gpu_max_default;
+
     if (auto af = read_text(*gpu_dir + "/available_frequencies"); af && !af->empty()) {
         std::string s = *af;
         while (!s.empty() && (s.back()==' ' || s.back()=='\t' || s.back()=='\n' || s.back()=='\r')) s.pop_back();
-        size_t pos = s.find_last_of(" \t");
-        gpu_max_default = (pos == std::string::npos) ? s : s.substr(pos + 1);
-        if (gpu_max_default.empty()) gpu_max_default = "9223372036854775807";
+
+        size_t first_end = s.find_first_of(" \t");
+        gpu_min_default = (first_end == std::string::npos) ? s : s.substr(0, first_end);
+
+        size_t last_sep = s.find_last_of(" \t");
+        gpu_max_default = (last_sep == std::string::npos) ? s : s.substr(last_sep + 1);
     }
+
+    if (gpu_min_default.empty())
+        gpu_min_default = read_text(*gpu_dir + "/min_freq").value_or("306000000");
+    if (gpu_max_default.empty())
+        gpu_max_default = read_text(*gpu_dir + "/max_freq").value_or("1020000000");
 
     std::cout << "CPU dir: " << *cpu_dir << "\n";
     std::cout << "GPU dir: " << *gpu_dir << "\n";
@@ -369,9 +380,11 @@ static int cmd_unlock(int argc, char** argv) {
     if (cmax) std::cout << "  " << cpu_max_p << " = " << *cmax << " (cpuinfo_max_freq)\n";
     else      std::cout << "  " << cpu_max_p << " = <skip> (cpuinfo_max_freq missing)\n";
 
-    std::cout << "  " << gpu_min_p << " = 0\n";
+    std::cout << "  " << gpu_min_p << " = " << gpu_min_default
+              << " (from available_frequencies if present)\n";
     std::cout << "  " << gpu_max_p << " = " << gpu_max_default
               << " (from available_frequencies if present)\n";
+
     if (exists(gov_p)) std::cout << "  " << gov_p << " = nvhost_podgov\n";
     else               std::cout << "  " << gov_p << " = <skip> (no governor file)\n";
 
@@ -383,8 +396,9 @@ static int cmd_unlock(int argc, char** argv) {
     bool ok_cpu1 = cmin ? write_text(cpu_min_p, *cmin) : true;
     bool ok_cpu2 = cmax ? write_text(cpu_max_p, *cmax) : true;
 
-    bool ok_gpu1 = write_text(gpu_min_p, "0");
+    bool ok_gpu1 = write_text(gpu_min_p, gpu_min_default);
     bool ok_gpu2 = write_text(gpu_max_p, gpu_max_default);
+
     bool ok_gov  = true;
     if (exists(gov_p)) ok_gov = write_text(gov_p, "nvhost_podgov");
 
