@@ -1,5 +1,3 @@
-/home/yuanyang/powercap_orin_ws/build/CMakeFiles/dvfs_probe.dir
-/home/yuanyang/powercap_orin_ws/build/CMakeFiles/dvfs_set.dir
-/home/yuanyang/powercap_orin_ws/build/CMakeFiles/logger.dir
+/home/yuanyang/powercap_orin_ws/build/CMakeFiles/dvfs_tool.dir
 /home/yuanyang/powercap_orin_ws/build/CMakeFiles/edit_cache.dir
 /home/yuanyang/powercap_orin_ws/build/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/dvfs_tool.dir/src/dvfs_tool.cpp.o -o dvfs_tool 

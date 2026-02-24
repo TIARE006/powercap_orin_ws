@@ -117,115 +117,41 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named dvfs_probe
+# Target rules for targets named dvfs_tool
 
 # Build rule for target.
-dvfs_probe: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 dvfs_probe
-.PHONY : dvfs_probe
+dvfs_tool: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 dvfs_tool
+.PHONY : dvfs_tool
 
 # fast build rule for target.
-dvfs_probe/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/dvfs_probe.dir/build.make CMakeFiles/dvfs_probe.dir/build
-.PHONY : dvfs_probe/fast
+dvfs_tool/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dvfs_tool.dir/build.make CMakeFiles/dvfs_tool.dir/build
+.PHONY : dvfs_tool/fast
 
-#=============================================================================
-# Target rules for targets named dvfs_set
-
-# Build rule for target.
-dvfs_set: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 dvfs_set
-.PHONY : dvfs_set
-
-# fast build rule for target.
-dvfs_set/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/dvfs_set.dir/build.make CMakeFiles/dvfs_set.dir/build
-.PHONY : dvfs_set/fast
-
-#=============================================================================
-# Target rules for targets named logger
-
-# Build rule for target.
-logger: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 logger
-.PHONY : logger
-
-# fast build rule for target.
-logger/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/logger.dir/build.make CMakeFiles/logger.dir/build
-.PHONY : logger/fast
-
-src/dvfs_probe.o: src/dvfs_probe.cpp.o
-.PHONY : src/dvfs_probe.o
+src/dvfs_tool.o: src/dvfs_tool.cpp.o
+.PHONY : src/dvfs_tool.o
 
 # target to build an object file
-src/dvfs_probe.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/dvfs_probe.dir/build.make CMakeFiles/dvfs_probe.dir/src/dvfs_probe.cpp.o
-.PHONY : src/dvfs_probe.cpp.o
+src/dvfs_tool.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dvfs_tool.dir/build.make CMakeFiles/dvfs_tool.dir/src/dvfs_tool.cpp.o
+.PHONY : src/dvfs_tool.cpp.o
 
-src/dvfs_probe.i: src/dvfs_probe.cpp.i
-.PHONY : src/dvfs_probe.i
-
-# target to preprocess a source file
-src/dvfs_probe.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/dvfs_probe.dir/build.make CMakeFiles/dvfs_probe.dir/src/dvfs_probe.cpp.i
-.PHONY : src/dvfs_probe.cpp.i
-
-src/dvfs_probe.s: src/dvfs_probe.cpp.s
-.PHONY : src/dvfs_probe.s
-
-# target to generate assembly for a file
-src/dvfs_probe.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/dvfs_probe.dir/build.make CMakeFiles/dvfs_probe.dir/src/dvfs_probe.cpp.s
-.PHONY : src/dvfs_probe.cpp.s
-
-src/dvfs_set.o: src/dvfs_set.cpp.o
-.PHONY : src/dvfs_set.o
-
-# target to build an object file
-src/dvfs_set.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/dvfs_set.dir/build.make CMakeFiles/dvfs_set.dir/src/dvfs_set.cpp.o
-.PHONY : src/dvfs_set.cpp.o
-
-src/dvfs_set.i: src/dvfs_set.cpp.i
-.PHONY : src/dvfs_set.i
+src/dvfs_tool.i: src/dvfs_tool.cpp.i
+.PHONY : src/dvfs_tool.i
 
 # target to preprocess a source file
-src/dvfs_set.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/dvfs_set.dir/build.make CMakeFiles/dvfs_set.dir/src/dvfs_set.cpp.i
-.PHONY : src/dvfs_set.cpp.i
+src/dvfs_tool.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dvfs_tool.dir/build.make CMakeFiles/dvfs_tool.dir/src/dvfs_tool.cpp.i
+.PHONY : src/dvfs_tool.cpp.i
 
-src/dvfs_set.s: src/dvfs_set.cpp.s
-.PHONY : src/dvfs_set.s
-
-# target to generate assembly for a file
-src/dvfs_set.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/dvfs_set.dir/build.make CMakeFiles/dvfs_set.dir/src/dvfs_set.cpp.s
-.PHONY : src/dvfs_set.cpp.s
-
-src/logger.o: src/logger.cpp.o
-.PHONY : src/logger.o
-
-# target to build an object file
-src/logger.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/logger.dir/build.make CMakeFiles/logger.dir/src/logger.cpp.o
-.PHONY : src/logger.cpp.o
-
-src/logger.i: src/logger.cpp.i
-.PHONY : src/logger.i
-
-# target to preprocess a source file
-src/logger.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/logger.dir/build.make CMakeFiles/logger.dir/src/logger.cpp.i
-.PHONY : src/logger.cpp.i
-
-src/logger.s: src/logger.cpp.s
-.PHONY : src/logger.s
+src/dvfs_tool.s: src/dvfs_tool.cpp.s
+.PHONY : src/dvfs_tool.s
 
 # target to generate assembly for a file
-src/logger.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/logger.dir/build.make CMakeFiles/logger.dir/src/logger.cpp.s
-.PHONY : src/logger.cpp.s
+src/dvfs_tool.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dvfs_tool.dir/build.make CMakeFiles/dvfs_tool.dir/src/dvfs_tool.cpp.s
+.PHONY : src/dvfs_tool.cpp.s
 
 # Help Target
 help:
@@ -235,18 +161,10 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... dvfs_probe"
-	@echo "... dvfs_set"
-	@echo "... logger"
-	@echo "... src/dvfs_probe.o"
-	@echo "... src/dvfs_probe.i"
-	@echo "... src/dvfs_probe.s"
-	@echo "... src/dvfs_set.o"
-	@echo "... src/dvfs_set.i"
-	@echo "... src/dvfs_set.s"
-	@echo "... src/logger.o"
-	@echo "... src/logger.i"
-	@echo "... src/logger.s"
+	@echo "... dvfs_tool"
+	@echo "... src/dvfs_tool.o"
+	@echo "... src/dvfs_tool.i"
+	@echo "... src/dvfs_tool.s"
 .PHONY : help
 
 
