@@ -5,6 +5,8 @@
 // Build (CMake in your repo):
 //   put this file at src/dvfs_tool.cpp and add executable dvfs_tool to CMakeLists.
 
+#include <atomic>
+#include <mutex>
 #include <chrono>
 #include <csignal>
 #include <cstdio>
@@ -232,17 +234,21 @@ static void print_watch_block(
     const std::optional<std::string>& t_soc0,
     const std::optional<std::string>& t_soc1,
     const std::optional<std::string>& t_soc2,
-    const std::optional<std::string>& t_tj
+    const std::optional<std::string>& t_tj,
+    long long vdd_in_mW,
+    long long vdd_cpu_gpu_cv_mW,
+    long long vdd_soc_mW
 ) {
-    // Reserve 4 lines on first call; then move cursor up 4 lines each update.
+    // Reserve 5 lines on first call; then move cursor up 5 lines each update.
     if (!initialized) {
-        std::cerr << "\n\n\n\n";
+        std::cerr << "\n\n\n\n\n";
         initialized = true;
     } else {
-        std::cerr << "\033[4A";
+        std::cerr << "\033[5A";
     }
 
     auto v = [](const std::optional<std::string>& x) { return x ? *x : std::string("NA"); };
+    auto fmt_mW = [](long long x) { return (x >= 0) ? std::to_string(x) : std::string("NA"); };
 
     // Line 1: CPU
     std::cerr << "\033[2K\r"
@@ -277,6 +283,13 @@ static void print_watch_block(
               << " | TJ "   << fmt_temp_C_1dp(t_tj)   << "C"
               << "\n";
 
+    // Line 5: Power
+    std::cerr << "\033[2K\r"
+              << "Power: VDD_IN " << fmt_mW(vdd_in_mW) << "mW"
+              << " | VDD_CPU_GPU_CV " << fmt_mW(vdd_cpu_gpu_cv_mW) << "mW"
+              << " | VDD_SOC " << fmt_mW(vdd_soc_mW) << "mW"
+              << "\n";
+
     std::cerr << std::flush;
 }
 
@@ -286,6 +299,65 @@ static void print_watch_block(
 static int64_t now_ns() {
     using namespace std::chrono;
     return duration_cast<nanoseconds>(steady_clock::now().time_since_epoch()).count();
+}
+
+// ============================================================
+// 5.1 tegrastats power reader (VDD_* mW)
+// ============================================================
+
+struct PowerCache {
+    std::atomic<long long> vdd_in_mw{-1};
+    std::atomic<long long> vdd_cpu_gpu_cv_mw{-1};
+    std::atomic<long long> vdd_soc_mw{-1};
+};
+
+// parse: find "<key> <num>mW/" in a line, return num (mW)
+static std::optional<long long> parse_mw_field(const std::string& line, const std::string& key) {
+    // Example: " ... VDD_IN 21954mW/21896mW ..."
+    auto pos = line.find(key);
+    if (pos == std::string::npos) return std::nullopt;
+    pos += key.size();
+
+    // skip spaces
+    while (pos < line.size() && (line[pos] == ' ' || line[pos] == '\t')) pos++;
+
+    // parse digits
+    long long val = 0;
+    bool any = false;
+    while (pos < line.size() && (line[pos] >= '0' && line[pos] <= '9')) {
+        any = true;
+        val = val * 10 + (line[pos] - '0');
+        pos++;
+    }
+    if (!any) return std::nullopt;
+
+    // expect "mW"
+    if (pos + 1 >= line.size() || line[pos] != 'm' || line[pos+1] != 'W') return std::nullopt;
+    return val;
+}
+
+static std::thread start_tegrastats_thread(int interval_ms, PowerCache* cache) {
+    // If dvfs_tool is run with sudo already, no need for "sudo" here.
+    // Otherwise tegrastats may require root on your system.
+    std::string cmd;
+    if (::geteuid() == 0) cmd = "tegrastats --interval " + std::to_string(interval_ms);
+    else                  cmd = "sudo tegrastats --interval " + std::to_string(interval_ms);
+
+    return std::thread([interval_ms, cache, cmd]() {
+        FILE* fp = ::popen(cmd.c_str(), "r");
+        if (!fp) return;
+
+        char buf[8192];
+        while (!g_stop && std::fgets(buf, sizeof(buf), fp)) {
+            std::string line(buf);
+
+            if (auto v = parse_mw_field(line, "VDD_IN"); v) cache->vdd_in_mw.store(*v, std::memory_order_relaxed);
+            if (auto v = parse_mw_field(line, "VDD_CPU_GPU_CV"); v) cache->vdd_cpu_gpu_cv_mw.store(*v, std::memory_order_relaxed);
+            if (auto v = parse_mw_field(line, "VDD_SOC"); v) cache->vdd_soc_mw.store(*v, std::memory_order_relaxed);
+        }
+
+        ::pclose(fp);
+    });
 }
 
 // ============================================================
@@ -527,13 +599,16 @@ static int cmd_log(int argc, char** argv) {
         std::cerr << "Failed to open: " << out << "\n";
         return 1;
     }
+    PowerCache pwr;
+    std::thread pwr_thr = start_tegrastats_thread(period_ms, &pwr);
 
     // CSV header (expanded)
     ofs << "ts_ns,dt_ns,"
-           "cpu_khz,cpu_min_khz,cpu_max_khz,cpu_governor,"
-           "gpu_hz,gpu_min_hz,gpu_max_hz,gpu_governor,"
-           "fan_cur_state,fan_max_state,fan_pwm,"
-           "temp_cpu_mC,temp_gpu_mC,temp_soc0_mC,temp_soc1_mC,temp_soc2_mC,temp_tj_mC\n";
+       "cpu_khz,cpu_min_khz,cpu_max_khz,cpu_governor,"
+       "gpu_hz,gpu_min_hz,gpu_max_hz,gpu_governor,"
+       "fan_cur_state,fan_max_state,fan_pwm,"
+       "temp_cpu_mC,temp_gpu_mC,temp_soc0_mC,temp_soc1_mC,temp_soc2_mC,temp_tj_mC,"
+       "vdd_in_mW,vdd_cpu_gpu_cv_mW,vdd_soc_mW\n";
     ofs.flush();
 
     if (!watch_mode) {
@@ -591,6 +666,10 @@ static int cmd_log(int argc, char** argv) {
         auto t_soc2 = tz_soc2 ? read_text(*tz_soc2 + "/temp") : std::nullopt;
         auto t_tj   = tz_tj   ? read_text(*tz_tj   + "/temp") : std::nullopt;
 
+        long long vdd_in   = pwr.vdd_in_mw.load(std::memory_order_relaxed);
+        long long vdd_cgcv = pwr.vdd_cpu_gpu_cv_mw.load(std::memory_order_relaxed);
+        long long vdd_soc  = pwr.vdd_soc_mw.load(std::memory_order_relaxed);
+
         // CSV row
         ofs << ts << "," << dt << ","
             << (cpu_khz ? *cpu_khz : "") << "," << (cpu_min ? *cpu_min : "") << "," << (cpu_max ? *cpu_max : "") << ","
@@ -600,7 +679,11 @@ static int cmd_log(int argc, char** argv) {
             << (fan_cur ? *fan_cur : "") << "," << (fan_max ? *fan_max : "") << "," << (fan_pwm ? *fan_pwm : "") << ","
             << (t_cpu  ? *t_cpu  : "") << "," << (t_gpu  ? *t_gpu  : "") << ","
             << (t_soc0 ? *t_soc0 : "") << "," << (t_soc1 ? *t_soc1 : "") << "," << (t_soc2 ? *t_soc2 : "") << ","
-            << (t_tj   ? *t_tj   : "") << "\n";
+            << (t_tj   ? *t_tj   : "") << ","
+            << (vdd_in   >= 0 ? std::to_string(vdd_in)   : "") << ","
+            << (vdd_cgcv >= 0 ? std::to_string(vdd_cgcv) : "") << ","
+            << (vdd_soc  >= 0 ? std::to_string(vdd_soc)  : "")
+            << "\n";
 
         // watch-like refresh (throttled)
         if (watch_mode) {
@@ -611,7 +694,8 @@ static int cmd_log(int argc, char** argv) {
                     cpu_khz, cpu_min, cpu_max, cpu_gov,
                     gpu_hz, gpu_min, gpu_max, gpu_gov,
                     fan_cur, fan_max, fan_pwm,
-                    t_cpu, t_gpu, t_soc0, t_soc1, t_soc2, t_tj
+                    t_cpu, t_gpu, t_soc0, t_soc1, t_soc2, t_tj,
+                    vdd_in, vdd_cgcv, vdd_soc
                 );
             }
         }
@@ -622,6 +706,7 @@ static int cmd_log(int argc, char** argv) {
 
     ofs.flush();
     if (watch_mode) std::cerr << "\n";
+    if (pwr_thr.joinable()) pwr_thr.join();
     std::cerr << "Stopped.\n";
     return 0;
 }
