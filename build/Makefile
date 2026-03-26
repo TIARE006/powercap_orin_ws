@@ -129,6 +129,19 @@ dvfs_tool/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/dvfs_tool.dir/build.make CMakeFiles/dvfs_tool.dir/build
 .PHONY : dvfs_tool/fast
 
+#=============================================================================
+# Target rules for targets named ina260_logger
+
+# Build rule for target.
+ina260_logger: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ina260_logger
+.PHONY : ina260_logger
+
+# fast build rule for target.
+ina260_logger/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ina260_logger.dir/build.make CMakeFiles/ina260_logger.dir/build
+.PHONY : ina260_logger/fast
+
 src/dvfs_tool.o: src/dvfs_tool.cpp.o
 .PHONY : src/dvfs_tool.o
 
@@ -153,6 +166,30 @@ src/dvfs_tool.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/dvfs_tool.dir/build.make CMakeFiles/dvfs_tool.dir/src/dvfs_tool.cpp.s
 .PHONY : src/dvfs_tool.cpp.s
 
+src/ina260_logger.o: src/ina260_logger.cpp.o
+.PHONY : src/ina260_logger.o
+
+# target to build an object file
+src/ina260_logger.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ina260_logger.dir/build.make CMakeFiles/ina260_logger.dir/src/ina260_logger.cpp.o
+.PHONY : src/ina260_logger.cpp.o
+
+src/ina260_logger.i: src/ina260_logger.cpp.i
+.PHONY : src/ina260_logger.i
+
+# target to preprocess a source file
+src/ina260_logger.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ina260_logger.dir/build.make CMakeFiles/ina260_logger.dir/src/ina260_logger.cpp.i
+.PHONY : src/ina260_logger.cpp.i
+
+src/ina260_logger.s: src/ina260_logger.cpp.s
+.PHONY : src/ina260_logger.s
+
+# target to generate assembly for a file
+src/ina260_logger.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ina260_logger.dir/build.make CMakeFiles/ina260_logger.dir/src/ina260_logger.cpp.s
+.PHONY : src/ina260_logger.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -162,9 +199,13 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... dvfs_tool"
+	@echo "... ina260_logger"
 	@echo "... src/dvfs_tool.o"
 	@echo "... src/dvfs_tool.i"
 	@echo "... src/dvfs_tool.s"
+	@echo "... src/ina260_logger.o"
+	@echo "... src/ina260_logger.i"
+	@echo "... src/ina260_logger.s"
 .PHONY : help
 
 

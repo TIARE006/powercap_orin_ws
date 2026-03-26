@@ -187,6 +187,7 @@ CMakeFiles/dvfs_tool.dir/src/dvfs_tool.cpp.o: \
  /usr/include/aarch64-linux-gnu/bits/types/struct_sigstack.h \
  /usr/include/aarch64-linux-gnu/bits/sigthread.h \
  /usr/include/aarch64-linux-gnu/bits/signal_ext.h \
+ /usr/include/c++/11/cstring /usr/include/string.h /usr/include/strings.h \
  /usr/include/c++/11/filesystem /usr/include/c++/11/bits/fs_fwd.h \
  /usr/include/c++/11/bits/fs_path.h /usr/include/c++/11/locale \
  /usr/include/c++/11/bits/locale_classes.h \
@@ -236,4 +237,13 @@ CMakeFiles/dvfs_tool.dir/src/dvfs_tool.cpp.o: \
  /usr/include/aarch64-linux-gnu/bits/fcntl-linux.h \
  /usr/include/aarch64-linux-gnu/bits/types/struct_iovec.h \
  /usr/include/linux/falloc.h /usr/include/aarch64-linux-gnu/bits/stat.h \
- /usr/include/aarch64-linux-gnu/bits/struct_stat.h
+ /usr/include/aarch64-linux-gnu/bits/struct_stat.h \
+ /usr/include/aarch64-linux-gnu/sys/ioctl.h \
+ /usr/include/aarch64-linux-gnu/bits/ioctls.h \
+ /usr/include/aarch64-linux-gnu/asm/ioctls.h \
+ /usr/include/asm-generic/ioctls.h /usr/include/linux/ioctl.h \
+ /usr/include/aarch64-linux-gnu/asm/ioctl.h \
+ /usr/include/asm-generic/ioctl.h \
+ /usr/include/aarch64-linux-gnu/bits/ioctl-types.h \
+ /usr/include/aarch64-linux-gnu/sys/ttydefaults.h \
+ /usr/include/linux/i2c-dev.h

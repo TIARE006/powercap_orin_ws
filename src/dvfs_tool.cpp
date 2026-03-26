@@ -10,10 +10,13 @@
 #include <chrono>
 #include <csignal>
 #include <cstdio>
+#include <cstring>
 #include <filesystem>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <optional>
+#include <sstream>
 #include <string>
 #include <thread>
 #include <vector>
@@ -21,6 +24,8 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <sys/ioctl.h>
+#include <linux/i2c-dev.h>
 
 namespace fs = std::filesystem;
 
@@ -216,6 +221,12 @@ static std::string fmt_temp_C_1dp(const std::optional<std::string>& temp_mC) {
     }
 }
 
+static std::string fmt_fp_3(double x) {
+    char buf[64];
+    std::snprintf(buf, sizeof(buf), "%.3f", x);
+    return std::string(buf);
+}
+
 static void print_watch_block(
     bool& initialized,
     const std::optional<std::string>& cpu_cur_khz,
@@ -237,20 +248,24 @@ static void print_watch_block(
     const std::optional<std::string>& t_tj,
     long long vdd_in_mW,
     long long vdd_cpu_gpu_cv_mW,
-    long long vdd_soc_mW
+    long long vdd_soc_mW,
+    bool ina_ok,
+    double ina_current_a,
+    double ina_voltage_v,
+    double ina_power_w,
+    double inst_rate_hz,
+    double avg_rate_hz
 ) {
-    // Reserve 5 lines on first call; then move cursor up 5 lines each update.
-    if (!initialized) {
-        std::cerr << "\n\n\n\n\n";
+   if (!initialized) {
+        std::cerr << "\n\n\n\n\n\n";
         initialized = true;
     } else {
-        std::cerr << "\033[5A";
+        std::cerr << "\033[6A";
     }
 
     auto v = [](const std::optional<std::string>& x) { return x ? *x : std::string("NA"); };
     auto fmt_mW = [](long long x) { return (x >= 0) ? std::to_string(x) : std::string("NA"); };
 
-    // Line 1: CPU
     std::cerr << "\033[2K\r"
               << "CPUfreq: cur=" << v(cpu_cur_khz)
               << " min=" << v(cpu_min_khz)
@@ -258,7 +273,6 @@ static void print_watch_block(
               << " gov=" << v(cpu_gov)
               << "\n";
 
-    // Line 2: GPU
     std::cerr << "\033[2K\r"
               << "GPUfreq: cur=" << v(gpu_cur_hz)
               << " min=" << v(gpu_min_hz)
@@ -266,14 +280,12 @@ static void print_watch_block(
               << " gov=" << v(gpu_gov)
               << "\n";
 
-    // Line 3: FAN
     std::cerr << "\033[2K\r"
               << "FAN: cur_state=" << v(fan_cur_state)
               << "/" << v(fan_max_state)
               << " pwm=" << v(fan_pwm)
               << "\n";
 
-    // Line 4: Temps
     std::cerr << "\033[2K\r"
               << "Temps: CPU " << fmt_temp_C_1dp(t_cpu) << "C"
               << " | GPU "  << fmt_temp_C_1dp(t_gpu)  << "C"
@@ -283,11 +295,18 @@ static void print_watch_block(
               << " | TJ "   << fmt_temp_C_1dp(t_tj)   << "C"
               << "\n";
 
-    // Line 5: Power
     std::cerr << "\033[2K\r"
               << "Power: VDD_IN " << fmt_mW(vdd_in_mW) << "mW"
               << " | VDD_CPU_GPU_CV " << fmt_mW(vdd_cpu_gpu_cv_mW) << "mW"
               << " | VDD_SOC " << fmt_mW(vdd_soc_mW) << "mW"
+              << "\n";
+
+    std::cerr << "\033[2K\r"
+              << "INA260: I=" << (ina_ok ? fmt_fp_3(ina_current_a) : "NA") << " A"
+              << " | V=" << (ina_ok ? fmt_fp_3(ina_voltage_v) : "NA") << " V"
+              << " | P=" << (ina_ok ? fmt_fp_3(ina_power_w)   : "NA") << " W"
+              << " | fs_inst=" << (inst_rate_hz > 0.0 ? fmt_fp_3(inst_rate_hz) : "NA") << " Hz"
+              << " | fs_avg="  << (avg_rate_hz  > 0.0 ? fmt_fp_3(avg_rate_hz)  : "NA") << " Hz"
               << "\n";
 
     std::cerr << std::flush;
@@ -298,7 +317,7 @@ static void print_watch_block(
 // ============================================================
 static int64_t now_ns() {
     using namespace std::chrono;
-    return duration_cast<nanoseconds>(steady_clock::now().time_since_epoch()).count();
+    return duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
 }
 
 // ============================================================
@@ -318,10 +337,8 @@ static std::optional<long long> parse_mw_field(const std::string& line, const st
     if (pos == std::string::npos) return std::nullopt;
     pos += key.size();
 
-    // skip spaces
     while (pos < line.size() && (line[pos] == ' ' || line[pos] == '\t')) pos++;
 
-    // parse digits
     long long val = 0;
     bool any = false;
     while (pos < line.size() && (line[pos] >= '0' && line[pos] <= '9')) {
@@ -331,19 +348,16 @@ static std::optional<long long> parse_mw_field(const std::string& line, const st
     }
     if (!any) return std::nullopt;
 
-    // expect "mW"
-    if (pos + 1 >= line.size() || line[pos] != 'm' || line[pos+1] != 'W') return std::nullopt;
+    if (pos + 1 >= line.size() || line[pos] != 'm' || line[pos + 1] != 'W') return std::nullopt;
     return val;
 }
 
 static std::thread start_tegrastats_thread(int interval_ms, PowerCache* cache) {
-    // If dvfs_tool is run with sudo already, no need for "sudo" here.
-    // Otherwise tegrastats may require root on your system.
     std::string cmd;
     if (::geteuid() == 0) cmd = "tegrastats --interval " + std::to_string(interval_ms);
     else                  cmd = "sudo tegrastats --interval " + std::to_string(interval_ms);
 
-    return std::thread([interval_ms, cache, cmd]() {
+    return std::thread([cache, cmd]() {
         FILE* fp = ::popen(cmd.c_str(), "r");
         if (!fp) return;
 
@@ -359,6 +373,71 @@ static std::thread start_tegrastats_thread(int interval_ms, PowerCache* cache) {
         ::pclose(fp);
     });
 }
+
+// ============================================================
+// 5.2 INA260 reader
+// ============================================================
+
+struct INA260Sample {
+    bool ok = false;
+    double current_a = 0.0;
+    double voltage_v = 0.0;
+    double power_w = 0.0;
+};
+
+class INA260Reader {
+public:
+    INA260Reader(std::string dev_path, int addr)
+        : dev_path_(std::move(dev_path)), addr_(addr) {}
+
+    ~INA260Reader() {
+        if (fd_ >= 0) ::close(fd_);
+    }
+
+    bool open_if_needed() {
+        if (fd_ >= 0) return true;
+
+        fd_ = ::open(dev_path_.c_str(), O_RDWR);
+        if (fd_ < 0) return false;
+
+        if (::ioctl(fd_, I2C_SLAVE, addr_) < 0) {
+            ::close(fd_);
+            fd_ = -1;
+            return false;
+        }
+        return true;
+    }
+
+    INA260Sample read_sample() {
+        INA260Sample s;
+        if (!open_if_needed()) return s;
+
+        auto rc = read_reg16_be(0x01); // current
+        auto rv = read_reg16_be(0x02); // bus voltage
+        auto rp = read_reg16_be(0x03); // power
+        if (!rc || !rv || !rp) return s;
+
+        s.ok = true;
+        s.current_a = (*rc * 1.25) / 1000.0; // 1.25 mA/LSB -> A
+        s.voltage_v = (*rv * 1.25) / 1000.0; // 1.25 mV/LSB -> V
+        s.power_w   = (*rp * 10.0) / 1000.0; // 10 mW/LSB -> W
+        return s;
+    }
+
+private:
+    std::optional<uint16_t> read_reg16_be(uint8_t reg) {
+        if (::write(fd_, &reg, 1) != 1) return std::nullopt;
+
+        uint8_t buf[2] = {0, 0};
+        if (::read(fd_, buf, 2) != 2) return std::nullopt;
+
+        return static_cast<uint16_t>((buf[0] << 8) | buf[1]);
+    }
+
+    std::string dev_path_;
+    int addr_;
+    int fd_ = -1;
+};
 
 // ============================================================
 // 6) Subcommands
@@ -396,7 +475,6 @@ static int cmd_probe() {
         print_kv("governor", read_text(*gpu_dir + "/governor"));
     }
 
-    // Fan
     std::cout << "\n[FAN cooling_device]\n";
     auto fan_cd = find_pwm_fan_cooling_device_dir();
     if (!fan_cd) {
@@ -406,7 +484,6 @@ static int cmd_probe() {
         print_kv("type", read_text(*fan_cd + "/type"));
         print_kv("cur_state", read_text(*fan_cd + "/cur_state"));
         print_kv("max_state", read_text(*fan_cd + "/max_state"));
-        // pwm1 (if present)
         const std::string pwm1 = "/sys/devices/platform/pwm-fan/hwmon/hwmon1/pwm1";
         if (exists(pwm1)) print_kv("pwm1", read_text(pwm1));
     }
@@ -504,7 +581,6 @@ static int cmd_unlock(int argc, char** argv) {
     const std::string gpu_max_p = *gpu_dir + "/max_freq";
     const std::string gov_p     = *gpu_dir + "/governor";
 
-    // Pick GPU min/max defaults from available_frequencies (first/last token).
     std::string gpu_min_default;
     std::string gpu_max_default;
     if (auto af = read_text(*gpu_dir + "/available_frequencies"); af && !af->empty()) {
@@ -542,7 +618,6 @@ static int cmd_unlock(int argc, char** argv) {
 
     bool ok_cpu1 = cmin ? write_text(cpu_min_p, *cmin) : true;
     bool ok_cpu2 = cmax ? write_text(cpu_max_p, *cmax) : true;
-
     bool ok_gpu1 = write_text(gpu_min_p, gpu_min_default);
     bool ok_gpu2 = write_text(gpu_max_p, gpu_max_default);
 
@@ -576,17 +651,14 @@ static int cmd_log(int argc, char** argv) {
         return 3;
     }
 
-    // Fan discovery
     auto fan_cd = find_pwm_fan_cooling_device_dir();
     const std::string fan_cur_p = fan_cd ? (*fan_cd + "/cur_state") : "";
     const std::string fan_max_p = fan_cd ? (*fan_cd + "/max_state") : "";
     const std::string fan_pwm_p = "/sys/devices/platform/pwm-fan/hwmon/hwmon1/pwm1";
     const bool has_fan_pwm = exists(fan_pwm_p);
 
-    // CPU governor path
     const std::string cpu_gov_p = *cpu_dir + "/scaling_governor";
 
-    // Temperatures: match common Jetson names.
     auto tz_cpu  = find_thermal_zone_by_keywords({"cpu-thermal","CPU-therm","cpu","CPU"});
     auto tz_gpu  = find_thermal_zone_by_keywords({"gpu-thermal","GPU-therm","gpu","ga10b","GPU"});
     auto tz_soc0 = find_thermal_zone_by_keywords({"soc0-thermal","SOC0","soc0"});
@@ -599,20 +671,30 @@ static int cmd_log(int argc, char** argv) {
         std::cerr << "Failed to open: " << out << "\n";
         return 1;
     }
+
     PowerCache pwr;
     std::thread pwr_thr = start_tegrastats_thread(period_ms, &pwr);
 
-    // CSV header (expanded)
-    ofs << "ts_ns,dt_ns,"
-       "cpu_khz,cpu_min_khz,cpu_max_khz,cpu_governor,"
-       "gpu_hz,gpu_min_hz,gpu_max_hz,gpu_governor,"
-       "fan_cur_state,fan_max_state,fan_pwm,"
-       "temp_cpu_mC,temp_gpu_mC,temp_soc0_mC,temp_soc1_mC,temp_soc2_mC,temp_tj_mC,"
-       "vdd_in_mW,vdd_cpu_gpu_cv_mW,vdd_soc_mW\n";
+    const std::string ina_dev = "/dev/i2c-7";
+    const int ina_addr = 0x40;
+    INA260Reader ina260(ina_dev, ina_addr);
+
+    ofs << "ts_ns,dt_ns,inst_rate_hz,avg_rate_hz,"
+       << "cpu_khz,cpu_min_khz,cpu_max_khz,cpu_governor,"
+       << "gpu_hz,gpu_min_hz,gpu_max_hz,gpu_governor,"
+       << "fan_cur_state,fan_max_state,fan_pwm,"
+       << "temp_cpu_mC,temp_gpu_mC,temp_soc0_mC,temp_soc1_mC,temp_soc2_mC,temp_tj_mC,"
+       << "vdd_in_mW,vdd_cpu_gpu_cv_mW,vdd_soc_mW,"
+       << "ina260_current_A,ina260_voltage_V,ina260_power_W\n";
     ofs.flush();
 
+    double sample_rate_hz = 1000.0 / static_cast<double>(period_ms);
+    double watch_rate_hz  = 1000.0 / static_cast<double>(watch_ms);
+
     if (!watch_mode) {
-        std::cerr << "Logging to " << out << " period=" << period_ms << "ms\n";
+        std::cerr << "Logging to " << out
+                  << " period=" << period_ms << "ms"
+                  << " sample_rate=" << std::fixed << std::setprecision(3) << sample_rate_hz << " Hz\n";
         std::cerr << "cpu_dir=" << *cpu_dir << "\n";
         std::cerr << "gpu_dir=" << *gpu_dir << "\n";
         std::cerr << "fan_cd=" << (fan_cd ? *fan_cd : "NOT_FOUND") << "\n";
@@ -622,17 +704,30 @@ static int cmd_log(int argc, char** argv) {
         std::cerr << "tz_soc1=" << (tz_soc1 ? *tz_soc1 : "NOT_FOUND") << "\n";
         std::cerr << "tz_soc2=" << (tz_soc2 ? *tz_soc2 : "NOT_FOUND") << "\n";
         std::cerr << "tz_tj="   << (tz_tj   ? *tz_tj   : "NOT_FOUND") << "\n";
+        std::cerr << "ina260_dev=" << ina_dev << " ina260_addr=0x"
+                  << std::hex << ina_addr << std::dec << "\n";
+        std::cerr << "note: INA260 uses I2C; this tool prints sampling rate, not UART baud rate.\n";
     } else {
-        std::cerr << "Logging to " << out << " period=" << period_ms
-                  << "ms (watch=" << watch_ms << "ms)\n";
+        std::cerr << "Logging to " << out
+                  << " period=" << period_ms << "ms"
+                  << " sample_rate=" << std::fixed << std::setprecision(3) << sample_rate_hz << " Hz"
+                  << " (watch=" << watch_ms << "ms"
+                  << ", watch_rate=" << watch_rate_hz << " Hz)\n";
+        std::cerr << "ina260_dev=" << ina_dev << " ina260_addr=0x"
+                  << std::hex << ina_addr << std::dec << "\n";
+        std::cerr << "note: INA260 uses I2C; this tool prints sampling rate, not UART baud rate.\n";
     }
 
     using clock = std::chrono::steady_clock;
     auto next = clock::now();
-    int line_cnt = 0;
     int64_t prev_ts = 0;
     int64_t last_watch_ns = 0;
     bool watch_initialized = false;
+
+    uint64_t sample_count = 0;
+    long double dt_sum_ns = 0.0L;
+    double inst_rate_hz = 0.0;
+    double avg_rate_hz = 0.0;
 
     while (!g_stop) {
         next += std::chrono::milliseconds(period_ms);
@@ -641,24 +736,27 @@ static int cmd_log(int argc, char** argv) {
         const int64_t dt = (prev_ts == 0) ? 0 : (ts - prev_ts);
         prev_ts = ts;
 
-        // CPU
+        if (dt > 0) {
+            ++sample_count;
+            dt_sum_ns += static_cast<long double>(dt);
+            inst_rate_hz = 1e9 / static_cast<double>(dt);
+            avg_rate_hz = 1e9 / static_cast<double>(dt_sum_ns / sample_count);
+        }
+
         auto cpu_khz = read_text(*cpu_dir + "/scaling_cur_freq");
         auto cpu_min = read_text(*cpu_dir + "/scaling_min_freq");
         auto cpu_max = read_text(*cpu_dir + "/scaling_max_freq");
         auto cpu_gov = read_text(cpu_gov_p);
 
-        // GPU
         auto gpu_hz  = read_text(*gpu_dir + "/cur_freq");
         auto gpu_min = read_text(*gpu_dir + "/min_freq");
         auto gpu_max = read_text(*gpu_dir + "/max_freq");
         auto gpu_gov = read_text(*gpu_dir + "/governor");
 
-        // Fan
         auto fan_cur = fan_cd ? read_text(fan_cur_p) : std::nullopt;
         auto fan_max = fan_cd ? read_text(fan_max_p) : std::nullopt;
         auto fan_pwm = has_fan_pwm ? read_text(fan_pwm_p) : std::nullopt;
 
-        // Temps
         auto t_cpu  = tz_cpu  ? read_text(*tz_cpu  + "/temp") : std::nullopt;
         auto t_gpu  = tz_gpu  ? read_text(*tz_gpu  + "/temp") : std::nullopt;
         auto t_soc0 = tz_soc0 ? read_text(*tz_soc0 + "/temp") : std::nullopt;
@@ -670,8 +768,11 @@ static int cmd_log(int argc, char** argv) {
         long long vdd_cgcv = pwr.vdd_cpu_gpu_cv_mw.load(std::memory_order_relaxed);
         long long vdd_soc  = pwr.vdd_soc_mw.load(std::memory_order_relaxed);
 
-        // CSV row
+        auto ina = ina260.read_sample();
+
         ofs << ts << "," << dt << ","
+            << (dt > 0 ? fmt_fp_3(inst_rate_hz) : "") << ","
+            << (sample_count > 0 ? fmt_fp_3(avg_rate_hz) : "") << ","
             << (cpu_khz ? *cpu_khz : "") << "," << (cpu_min ? *cpu_min : "") << "," << (cpu_max ? *cpu_max : "") << ","
             << (cpu_gov ? *cpu_gov : "") << ","
             << (gpu_hz  ? *gpu_hz  : "") << "," << (gpu_min ? *gpu_min : "") << "," << (gpu_max ? *gpu_max : "") << ","
@@ -682,12 +783,15 @@ static int cmd_log(int argc, char** argv) {
             << (t_tj   ? *t_tj   : "") << ","
             << (vdd_in   >= 0 ? std::to_string(vdd_in)   : "") << ","
             << (vdd_cgcv >= 0 ? std::to_string(vdd_cgcv) : "") << ","
-            << (vdd_soc  >= 0 ? std::to_string(vdd_soc)  : "")
+            << (vdd_soc  >= 0 ? std::to_string(vdd_soc)  : "") << ","
+            << (ina.ok ? fmt_fp_3(ina.current_a) : "") << ","
+            << (ina.ok ? fmt_fp_3(ina.voltage_v) : "") << ","
+            << (ina.ok ? fmt_fp_3(ina.power_w)   : "")
             << "\n";
+        ofs.flush();
 
-        // watch-like refresh (throttled)
         if (watch_mode) {
-            if (last_watch_ns == 0 || (ts - last_watch_ns) >= (int64_t)watch_ms * 1000000LL) {
+            if (last_watch_ns == 0 || (ts - last_watch_ns) >= static_cast<int64_t>(watch_ms) * 1000000LL) {
                 last_watch_ns = ts;
                 print_watch_block(
                     watch_initialized,
@@ -695,38 +799,42 @@ static int cmd_log(int argc, char** argv) {
                     gpu_hz, gpu_min, gpu_max, gpu_gov,
                     fan_cur, fan_max, fan_pwm,
                     t_cpu, t_gpu, t_soc0, t_soc1, t_soc2, t_tj,
-                    vdd_in, vdd_cgcv, vdd_soc
+                    vdd_in, vdd_cgcv, vdd_soc,
+                    ina.ok, ina.current_a, ina.voltage_v, ina.power_w,
+                    inst_rate_hz, avg_rate_hz
                 );
             }
         }
 
-        if (++line_cnt % 10 == 0) ofs.flush();
         std::this_thread::sleep_until(next);
     }
 
-    ofs.flush();
-    if (watch_mode) std::cerr << "\n";
     if (pwr_thr.joinable()) pwr_thr.join();
-    std::cerr << "Stopped.\n";
+
+    if (sample_count > 0) {
+        std::cerr << "\nFinal sampling stats: samples=" << sample_count
+                  << " avg_rate=" << fmt_fp_3(avg_rate_hz) << " Hz"
+                  << " avg_dt=" << fmt_fp_3(static_cast<double>(dt_sum_ns / sample_count) / 1e6) << " ms\n";
+    }
+
     return 0;
 }
 
 // ============================================================
-// 7) main dispatch
+// 7) main
 // ============================================================
 int main(int argc, char** argv) {
-    if (argc < 2 || std::string(argv[1]) == "-h" || std::string(argv[1]) == "--help") {
+    if (argc < 2) {
         usage();
         return 0;
     }
 
-    std::string cmd = argv[1];
-    if (cmd == "probe")  return cmd_probe();
-    if (cmd == "set")    return cmd_set(argc, argv);
-    if (cmd == "unlock") return cmd_unlock(argc, argv);
-    if (cmd == "log")    return cmd_log(argc, argv);
+    std::string sub = argv[1];
+    if (sub == "probe")  return cmd_probe();
+    if (sub == "set")    return cmd_set(argc - 1, argv + 1);
+    if (sub == "unlock") return cmd_unlock(argc - 1, argv + 1);
+    if (sub == "log")    return cmd_log(argc - 1, argv + 1);
 
-    std::cerr << "Unknown subcommand: " << cmd << "\n";
     usage();
-    return 1;
+    return 2;
 }

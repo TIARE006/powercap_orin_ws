@@ -5,3 +5,4 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(dvfs_tool src/dvfs_tool.cpp)
+add_executable(ina260_logger src/ina260_logger.cpp)
