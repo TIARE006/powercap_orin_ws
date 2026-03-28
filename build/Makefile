@@ -358,6 +358,30 @@ src/jetson/jetson_platform.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/jetson/jetson_platform.cpp.s
 .PHONY : src/jetson/jetson_platform.cpp.s
 
+src/jetson/jtop_reader.o: src/jetson/jtop_reader.cpp.o
+.PHONY : src/jetson/jtop_reader.o
+
+# target to build an object file
+src/jetson/jtop_reader.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/jetson/jtop_reader.cpp.o
+.PHONY : src/jetson/jtop_reader.cpp.o
+
+src/jetson/jtop_reader.i: src/jetson/jtop_reader.cpp.i
+.PHONY : src/jetson/jtop_reader.i
+
+# target to preprocess a source file
+src/jetson/jtop_reader.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/jetson/jtop_reader.cpp.i
+.PHONY : src/jetson/jtop_reader.cpp.i
+
+src/jetson/jtop_reader.s: src/jetson/jtop_reader.cpp.s
+.PHONY : src/jetson/jtop_reader.s
+
+# target to generate assembly for a file
+src/jetson/jtop_reader.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/jetson/jtop_reader.cpp.s
+.PHONY : src/jetson/jtop_reader.cpp.s
+
 src/jetson/tegrastats_monitor.o: src/jetson/tegrastats_monitor.cpp.o
 .PHONY : src/jetson/tegrastats_monitor.o
 
@@ -467,6 +491,9 @@ help:
 	@echo "... src/jetson/jetson_platform.o"
 	@echo "... src/jetson/jetson_platform.i"
 	@echo "... src/jetson/jetson_platform.s"
+	@echo "... src/jetson/jtop_reader.o"
+	@echo "... src/jetson/jtop_reader.i"
+	@echo "... src/jetson/jtop_reader.s"
 	@echo "... src/jetson/tegrastats_monitor.o"
 	@echo "... src/jetson/tegrastats_monitor.i"
 	@echo "... src/jetson/tegrastats_monitor.s"

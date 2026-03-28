@@ -168,15 +168,36 @@ CMakeFiles/dvfs_tool.dir/src/main.cpp.o: ../src/main.cpp \
   /usr/include/c++/11/bits/stl_vector.h \
   /usr/include/c++/11/bits/stl_bvector.h \
   /usr/include/c++/11/bits/vector.tcc \
+  ../include/jetson/jtop_reader.hpp \
+  /usr/include/c++/11/atomic \
+  /usr/include/c++/11/bits/atomic_base.h \
+  /usr/include/c++/11/bits/atomic_lockfree_defines.h \
+  /usr/include/c++/11/mutex \
+  /usr/include/c++/11/tuple \
+  /usr/include/c++/11/array \
+  /usr/include/c++/11/bits/uses_allocator.h \
+  /usr/include/c++/11/bits/invoke.h \
+  /usr/include/c++/11/chrono \
+  /usr/include/c++/11/ratio \
+  /usr/include/c++/11/limits \
+  /usr/include/c++/11/ctime \
+  /usr/include/c++/11/bits/parse_numbers.h \
+  /usr/include/c++/11/system_error \
+  /usr/include/aarch64-linux-gnu/c++/11/bits/error_constants.h \
+  /usr/include/c++/11/stdexcept \
+  /usr/include/c++/11/bits/std_mutex.h \
+  /usr/include/c++/11/bits/unique_lock.h \
+  /usr/include/c++/11/thread \
+  /usr/include/c++/11/bits/std_thread.h \
+  /usr/include/c++/11/bits/refwrap.h \
+  /usr/include/c++/11/bits/unique_ptr.h \
+  /usr/include/c++/11/bits/this_thread_sleep.h \
   /usr/include/c++/11/fstream \
   /usr/include/c++/11/istream \
   /usr/include/c++/11/ios \
   /usr/include/c++/11/bits/ios_base.h \
   /usr/include/c++/11/bits/locale_classes.h \
   /usr/include/c++/11/bits/locale_classes.tcc \
-  /usr/include/c++/11/system_error \
-  /usr/include/aarch64-linux-gnu/c++/11/bits/error_constants.h \
-  /usr/include/c++/11/stdexcept \
   /usr/include/c++/11/streambuf \
   /usr/include/c++/11/bits/streambuf.tcc \
   /usr/include/c++/11/bits/basic_ios.h \
@@ -203,23 +224,6 @@ CMakeFiles/dvfs_tool.dir/src/main.cpp.o: ../src/main.cpp \
   ../include/jetson/gpu_freq_device.hpp \
   ../include/jetson/ina260_reader.hpp \
   ../include/jetson/tegrastats_monitor.hpp \
-  /usr/include/c++/11/atomic \
-  /usr/include/c++/11/bits/atomic_base.h \
-  /usr/include/c++/11/bits/atomic_lockfree_defines.h \
-  /usr/include/c++/11/thread \
-  /usr/include/c++/11/bits/std_thread.h \
-  /usr/include/c++/11/tuple \
-  /usr/include/c++/11/array \
-  /usr/include/c++/11/bits/uses_allocator.h \
-  /usr/include/c++/11/bits/invoke.h \
-  /usr/include/c++/11/bits/refwrap.h \
-  /usr/include/c++/11/bits/unique_ptr.h \
-  /usr/include/c++/11/bits/this_thread_sleep.h \
-  /usr/include/c++/11/chrono \
-  /usr/include/c++/11/ratio \
-  /usr/include/c++/11/limits \
-  /usr/include/c++/11/ctime \
-  /usr/include/c++/11/bits/parse_numbers.h \
   ../include/jetson/thermal_sensor.hpp \
   /usr/include/c++/11/memory \
   /usr/include/c++/11/bits/stl_tempbuf.h \
@@ -285,7 +289,6 @@ CMakeFiles/dvfs_tool.dir/src/main.cpp.o: ../src/main.cpp \
   /usr/include/aarch64-linux-gnu/bits/types/struct_sigstack.h \
   /usr/include/aarch64-linux-gnu/bits/sigthread.h \
   /usr/include/aarch64-linux-gnu/bits/signal_ext.h \
-  /usr/include/c++/11/iostream \
   /usr/include/c++/11/filesystem \
   /usr/include/c++/11/bits/fs_fwd.h \
   /usr/include/c++/11/bits/fs_path.h \
@@ -302,8 +305,11 @@ CMakeFiles/dvfs_tool.dir/src/main.cpp.o: ../src/main.cpp \
   /usr/include/c++/11/bits/sstream.tcc \
   /usr/include/c++/11/codecvt \
   /usr/include/c++/11/bits/fs_dir.h \
-  /usr/include/c++/11/bits/fs_ops.h
+  /usr/include/c++/11/bits/fs_ops.h \
+  /usr/include/c++/11/iostream
 
+
+/usr/include/c++/11/iostream:
 
 /usr/include/c++/11/bits/locale_facets_nonio.tcc:
 
@@ -316,8 +322,6 @@ CMakeFiles/dvfs_tool.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/c++/11/bits/fs_path.h:
 
 /usr/include/c++/11/filesystem:
-
-/usr/include/c++/11/iostream:
 
 /usr/include/aarch64-linux-gnu/bits/sigthread.h:
 
@@ -353,6 +357,10 @@ CMakeFiles/dvfs_tool.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/aarch64-linux-gnu/bits/types/stack_t.h:
 
+/usr/include/linux/posix_types.h:
+
+/usr/include/asm-generic/int-ll64.h:
+
 /usr/include/c++/11/ext/alloc_traits.h:
 
 ../include/jetson/types.hpp:
@@ -376,8 +384,6 @@ CMakeFiles/dvfs_tool.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/aarch64-linux-gnu/bits/types/timer_t.h:
 
 /usr/include/c++/11/bits/ostream.tcc:
-
-/usr/include/asm-generic/int-ll64.h:
 
 /usr/include/aarch64-linux-gnu/bits/types/clockid_t.h:
 
@@ -442,6 +448,10 @@ CMakeFiles/dvfs_tool.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/c++/11/bits/string_view.tcc:
 
 /usr/include/aarch64-linux-gnu/bits/floatn-common.h:
+
+/usr/include/aarch64-linux-gnu/asm/bitsperlong.h:
+
+/usr/include/c++/11/bits/allocated_ptr.h:
 
 /usr/include/aarch64-linux-gnu/bits/timex.h:
 
@@ -557,10 +567,6 @@ CMakeFiles/dvfs_tool.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/c++/11/limits:
 
-/usr/include/c++/11/bits/allocated_ptr.h:
-
-/usr/include/aarch64-linux-gnu/asm/bitsperlong.h:
-
 /usr/include/c++/11/bits/quoted_string.h:
 
 /usr/include/aarch64-linux-gnu/bits/types/locale_t.h:
@@ -620,6 +626,8 @@ CMakeFiles/dvfs_tool.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/pthread.h:
 
 /usr/include/aarch64-linux-gnu/sys/time.h:
+
+../include/jetson/jtop_reader.hpp:
 
 /usr/include/c++/11/bits/stl_relops.h:
 
@@ -683,6 +691,12 @@ CMakeFiles/dvfs_tool.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/c++/11/ext/string_conversions.h:
 
+/usr/include/asm-generic/bitsperlong.h:
+
+/usr/include/asm-generic/types.h:
+
+/usr/include/c++/11/bits/concept_check.h:
+
 /usr/include/aarch64-linux-gnu/bits/byteswap.h:
 
 /usr/include/c++/11/debug/assertions.h:
@@ -731,13 +745,13 @@ CMakeFiles/dvfs_tool.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/aarch64-linux-gnu/bits/types/__fpos_t.h:
 
-/usr/include/c++/11/codecvt:
-
-/usr/include/c++/11/bits/streambuf.tcc:
-
 /usr/include/aarch64-linux-gnu/bits/typesizes.h:
 
 /usr/include/c++/11/bits/atomic_lockfree_defines.h:
+
+/usr/include/c++/11/codecvt:
+
+/usr/include/c++/11/bits/streambuf.tcc:
 
 /usr/include/aarch64-linux-gnu/bits/types/__fpos64_t.h:
 
@@ -775,6 +789,50 @@ CMakeFiles/dvfs_tool.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/c++/11/bits/stl_bvector.h:
 
+/usr/include/c++/11/mutex:
+
+/usr/include/c++/11/array:
+
+/usr/include/c++/11/bits/invoke.h:
+
+/usr/include/c++/11/ctime:
+
+/usr/include/c++/11/bits/basic_ios.tcc:
+
+/usr/include/c++/11/bits/enable_special_members.h:
+
+/usr/include/c++/11/bits/codecvt.h:
+
+/usr/include/c++/11/bits/parse_numbers.h:
+
+/usr/include/c++/11/bits/shared_ptr_atomic.h:
+
+/usr/include/aarch64-linux-gnu/c++/11/bits/error_constants.h:
+
+/usr/include/c++/11/stdexcept:
+
+/usr/include/c++/11/bits/std_mutex.h:
+
+/usr/include/c++/11/bits/uses_allocator.h:
+
+/usr/include/c++/11/bits/unique_lock.h:
+
+/usr/include/aarch64-linux-gnu/bits/sigaction.h:
+
+/usr/include/c++/11/bits/stl_iterator_base_funcs.h:
+
+/usr/include/c++/11/bits/cpp_type_traits.h:
+
+/usr/include/c++/11/bits/std_thread.h:
+
+/usr/include/linux/stddef.h:
+
+/usr/include/c++/11/bits/refwrap.h:
+
+/usr/include/c++/11/bits/unique_ptr.h:
+
+/usr/include/c++/11/ostream:
+
 /usr/include/c++/11/istream:
 
 /usr/include/c++/11/pstl/glue_memory_defs.h:
@@ -792,10 +850,6 @@ CMakeFiles/dvfs_tool.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/c++/11/bits/locale_classes.h:
 
 /usr/include/c++/11/bits/locale_classes.tcc:
-
-/usr/include/aarch64-linux-gnu/c++/11/bits/error_constants.h:
-
-/usr/include/c++/11/stdexcept:
 
 /usr/include/c++/11/bits/basic_ios.h:
 
@@ -821,21 +875,9 @@ CMakeFiles/dvfs_tool.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/aarch64-linux-gnu/c++/11/bits/ctype_inline.h:
 
-/usr/include/c++/11/ostream:
-
-/usr/include/c++/11/bits/unique_ptr.h:
-
 /usr/include/aarch64-linux-gnu/bits/sched.h:
 
 /usr/include/c++/11/bits/istream.tcc:
-
-/usr/include/c++/11/bits/basic_ios.tcc:
-
-/usr/include/c++/11/bits/enable_special_members.h:
-
-/usr/include/c++/11/bits/codecvt.h:
-
-/usr/include/c++/11/ctime:
 
 /usr/include/asm-generic/posix_types.h:
 
@@ -848,26 +890,6 @@ CMakeFiles/dvfs_tool.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/aarch64-linux-gnu/bits/signum-arch.h:
 
 /usr/include/aarch64-linux-gnu/asm/sigcontext.h:
-
-/usr/include/c++/11/bits/stl_iterator_base_funcs.h:
-
-/usr/include/c++/11/bits/cpp_type_traits.h:
-
-/usr/include/c++/11/bits/std_thread.h:
-
-/usr/include/c++/11/array:
-
-/usr/include/c++/11/bits/uses_allocator.h:
-
-/usr/include/c++/11/bits/invoke.h:
-
-/usr/include/linux/stddef.h:
-
-/usr/include/c++/11/bits/refwrap.h:
-
-/usr/include/c++/11/bits/parse_numbers.h:
-
-/usr/include/c++/11/bits/shared_ptr_atomic.h:
 
 /usr/include/c++/11/memory:
 
@@ -891,8 +913,6 @@ CMakeFiles/dvfs_tool.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/aarch64-linux-gnu/bits/sigevent-consts.h:
 
-/usr/include/aarch64-linux-gnu/bits/sigaction.h:
-
 /usr/lib/gcc/aarch64-linux-gnu/11/include/stdint.h:
 
 ../include/jetson/ina260_reader.hpp:
@@ -900,11 +920,3 @@ CMakeFiles/dvfs_tool.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/aarch64-linux-gnu/bits/sigcontext.h:
 
 /usr/include/linux/types.h:
-
-/usr/include/asm-generic/types.h:
-
-/usr/include/c++/11/bits/concept_check.h:
-
-/usr/include/asm-generic/bitsperlong.h:
-
-/usr/include/linux/posix_types.h:

@@ -16,6 +16,7 @@ add_library(jetson_platform
     src/jetson/ina260_reader.cpp
     src/jetson/tegrastats_monitor.cpp
     src/jetson/jetson_platform.cpp
+    src/jetson/jtop_reader.cpp
     src/app/csv_logger.cpp
     src/app/watch_renderer.cpp
 )

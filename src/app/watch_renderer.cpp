@@ -18,12 +18,12 @@ static std::string fmt_fp(double x) {
     return std::string(buf);
 }
 
-void WatchRenderer::render(const jetson::PlatformSample& s) {
+void WatchRenderer::render(const jetson::PlatformSample& s, const jetson::JtopSample& jt) {
     if (!initialized_) {
-        std::cerr << "\n\n\n\n\n\n";
+        std::cerr << "\n\n\n\n\n\n\n";
         initialized_ = true;
     } else {
-        std::cerr << "\033[6A";
+        std::cerr << "\033[7A";
     }
 
     std::cerr << "\033[2K\r"
@@ -56,6 +56,15 @@ void WatchRenderer::render(const jetson::PlatformSample& s) {
               << "POWER: VDD_IN=" << s.power.tegrastats.vdd_in_mw
               << "mW VDD_CPU_GPU_CV=" << s.power.tegrastats.vdd_cpu_gpu_cv_mw
               << "mW VDD_SOC=" << s.power.tegrastats.vdd_soc_mw << "mW\n";
+
+    std::cerr << "\033[2K\r"
+              << "JTOP_POWER: TOT="
+              << (jt.valid ? jt.power_tot_mw : "NA")
+              << "mW CPU_GPU_CV="
+              << (jt.valid ? jt.power_vdd_cpu_gpu_cv_mw : "NA")
+              << "mW SOC="
+              << (jt.valid ? jt.power_vdd_soc_mw : "NA")
+              << "mW\n";
 
     std::cerr << "\033[2K\r"
               << "INA260: I="

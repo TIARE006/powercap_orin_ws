@@ -192,15 +192,6 @@ dvfs_tool_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 dvfs_tool_SOURCE_DIR:STATIC=/home/yuanyang/powercap_orin_ws
 
-//Value Computed by CMake
-powercap_orin_ws_BINARY_DIR:STATIC=/home/yuanyang/powercap_orin_ws/build
-
-//Value Computed by CMake
-powercap_orin_ws_IS_TOP_LEVEL:STATIC=ON
-
-//Value Computed by CMake
-powercap_orin_ws_SOURCE_DIR:STATIC=/home/yuanyang/powercap_orin_ws
-
 
 ########################
 # INTERNAL cache entries

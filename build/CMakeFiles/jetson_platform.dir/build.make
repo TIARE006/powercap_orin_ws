@@ -195,10 +195,24 @@ CMakeFiles/jetson_platform.dir/src/jetson/jetson_platform.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/jetson_platform.dir/src/jetson/jetson_platform.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/yuanyang/powercap_orin_ws/src/jetson/jetson_platform.cpp -o CMakeFiles/jetson_platform.dir/src/jetson/jetson_platform.cpp.s
 
+CMakeFiles/jetson_platform.dir/src/jetson/jtop_reader.cpp.o: CMakeFiles/jetson_platform.dir/flags.make
+CMakeFiles/jetson_platform.dir/src/jetson/jtop_reader.cpp.o: ../src/jetson/jtop_reader.cpp
+CMakeFiles/jetson_platform.dir/src/jetson/jtop_reader.cpp.o: CMakeFiles/jetson_platform.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/yuanyang/powercap_orin_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/jetson_platform.dir/src/jetson/jtop_reader.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jetson_platform.dir/src/jetson/jtop_reader.cpp.o -MF CMakeFiles/jetson_platform.dir/src/jetson/jtop_reader.cpp.o.d -o CMakeFiles/jetson_platform.dir/src/jetson/jtop_reader.cpp.o -c /home/yuanyang/powercap_orin_ws/src/jetson/jtop_reader.cpp
+
+CMakeFiles/jetson_platform.dir/src/jetson/jtop_reader.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/jetson_platform.dir/src/jetson/jtop_reader.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/yuanyang/powercap_orin_ws/src/jetson/jtop_reader.cpp > CMakeFiles/jetson_platform.dir/src/jetson/jtop_reader.cpp.i
+
+CMakeFiles/jetson_platform.dir/src/jetson/jtop_reader.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/jetson_platform.dir/src/jetson/jtop_reader.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/yuanyang/powercap_orin_ws/src/jetson/jtop_reader.cpp -o CMakeFiles/jetson_platform.dir/src/jetson/jtop_reader.cpp.s
+
 CMakeFiles/jetson_platform.dir/src/app/csv_logger.cpp.o: CMakeFiles/jetson_platform.dir/flags.make
 CMakeFiles/jetson_platform.dir/src/app/csv_logger.cpp.o: ../src/app/csv_logger.cpp
 CMakeFiles/jetson_platform.dir/src/app/csv_logger.cpp.o: CMakeFiles/jetson_platform.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/yuanyang/powercap_orin_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/jetson_platform.dir/src/app/csv_logger.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/yuanyang/powercap_orin_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/jetson_platform.dir/src/app/csv_logger.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jetson_platform.dir/src/app/csv_logger.cpp.o -MF CMakeFiles/jetson_platform.dir/src/app/csv_logger.cpp.o.d -o CMakeFiles/jetson_platform.dir/src/app/csv_logger.cpp.o -c /home/yuanyang/powercap_orin_ws/src/app/csv_logger.cpp
 
 CMakeFiles/jetson_platform.dir/src/app/csv_logger.cpp.i: cmake_force
@@ -212,7 +226,7 @@ CMakeFiles/jetson_platform.dir/src/app/csv_logger.cpp.s: cmake_force
 CMakeFiles/jetson_platform.dir/src/app/watch_renderer.cpp.o: CMakeFiles/jetson_platform.dir/flags.make
 CMakeFiles/jetson_platform.dir/src/app/watch_renderer.cpp.o: ../src/app/watch_renderer.cpp
 CMakeFiles/jetson_platform.dir/src/app/watch_renderer.cpp.o: CMakeFiles/jetson_platform.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/yuanyang/powercap_orin_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/jetson_platform.dir/src/app/watch_renderer.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/yuanyang/powercap_orin_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/jetson_platform.dir/src/app/watch_renderer.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jetson_platform.dir/src/app/watch_renderer.cpp.o -MF CMakeFiles/jetson_platform.dir/src/app/watch_renderer.cpp.o.d -o CMakeFiles/jetson_platform.dir/src/app/watch_renderer.cpp.o -c /home/yuanyang/powercap_orin_ws/src/app/watch_renderer.cpp
 
 CMakeFiles/jetson_platform.dir/src/app/watch_renderer.cpp.i: cmake_force
@@ -234,6 +248,7 @@ jetson_platform_OBJECTS = \
 "CMakeFiles/jetson_platform.dir/src/jetson/ina260_reader.cpp.o" \
 "CMakeFiles/jetson_platform.dir/src/jetson/tegrastats_monitor.cpp.o" \
 "CMakeFiles/jetson_platform.dir/src/jetson/jetson_platform.cpp.o" \
+"CMakeFiles/jetson_platform.dir/src/jetson/jtop_reader.cpp.o" \
 "CMakeFiles/jetson_platform.dir/src/app/csv_logger.cpp.o" \
 "CMakeFiles/jetson_platform.dir/src/app/watch_renderer.cpp.o"
 
@@ -249,11 +264,12 @@ libjetson_platform.a: CMakeFiles/jetson_platform.dir/src/jetson/fan_device.cpp.o
 libjetson_platform.a: CMakeFiles/jetson_platform.dir/src/jetson/ina260_reader.cpp.o
 libjetson_platform.a: CMakeFiles/jetson_platform.dir/src/jetson/tegrastats_monitor.cpp.o
 libjetson_platform.a: CMakeFiles/jetson_platform.dir/src/jetson/jetson_platform.cpp.o
+libjetson_platform.a: CMakeFiles/jetson_platform.dir/src/jetson/jtop_reader.cpp.o
 libjetson_platform.a: CMakeFiles/jetson_platform.dir/src/app/csv_logger.cpp.o
 libjetson_platform.a: CMakeFiles/jetson_platform.dir/src/app/watch_renderer.cpp.o
 libjetson_platform.a: CMakeFiles/jetson_platform.dir/build.make
 libjetson_platform.a: CMakeFiles/jetson_platform.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/yuanyang/powercap_orin_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Linking CXX static library libjetson_platform.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/yuanyang/powercap_orin_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Linking CXX static library libjetson_platform.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/jetson_platform.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/jetson_platform.dir/link.txt --verbose=$(VERBOSE)
 

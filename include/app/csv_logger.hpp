@@ -1,5 +1,6 @@
 #pragma once
 #include "jetson/types.hpp"
+#include "jetson/jtop_reader.hpp"
 #include <fstream>
 #include <string>
 
@@ -12,6 +13,7 @@ public:
     bool ok() const;
     void write_header();
     void write_sample(const jetson::PlatformSample& s);
+    void write_sample(const jetson::PlatformSample& s, const jetson::JtopSample& jt);
 
 private:
     static long find_temp(const jetson::ThermalState& t, const std::string& key);

@@ -17,6 +17,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/yuanyang/powercap_orin_ws/src/jetson/gpu_freq_device.cpp" "CMakeFiles/jetson_platform.dir/src/jetson/gpu_freq_device.cpp.o" "gcc" "CMakeFiles/jetson_platform.dir/src/jetson/gpu_freq_device.cpp.o.d"
   "/home/yuanyang/powercap_orin_ws/src/jetson/ina260_reader.cpp" "CMakeFiles/jetson_platform.dir/src/jetson/ina260_reader.cpp.o" "gcc" "CMakeFiles/jetson_platform.dir/src/jetson/ina260_reader.cpp.o.d"
   "/home/yuanyang/powercap_orin_ws/src/jetson/jetson_platform.cpp" "CMakeFiles/jetson_platform.dir/src/jetson/jetson_platform.cpp.o" "gcc" "CMakeFiles/jetson_platform.dir/src/jetson/jetson_platform.cpp.o.d"
+  "/home/yuanyang/powercap_orin_ws/src/jetson/jtop_reader.cpp" "CMakeFiles/jetson_platform.dir/src/jetson/jtop_reader.cpp.o" "gcc" "CMakeFiles/jetson_platform.dir/src/jetson/jtop_reader.cpp.o.d"
   "/home/yuanyang/powercap_orin_ws/src/jetson/tegrastats_monitor.cpp" "CMakeFiles/jetson_platform.dir/src/jetson/tegrastats_monitor.cpp.o" "gcc" "CMakeFiles/jetson_platform.dir/src/jetson/tegrastats_monitor.cpp.o.d"
   "/home/yuanyang/powercap_orin_ws/src/jetson/thermal_sensor.cpp" "CMakeFiles/jetson_platform.dir/src/jetson/thermal_sensor.cpp.o" "gcc" "CMakeFiles/jetson_platform.dir/src/jetson/thermal_sensor.cpp.o.d"
   )

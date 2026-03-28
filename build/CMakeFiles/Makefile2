@@ -83,12 +83,12 @@ clean: CMakeFiles/dvfs_tool.dir/clean
 CMakeFiles/jetson_platform.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/yuanyang/powercap_orin_ws/build/CMakeFiles --progress-num=3,4,5,6,7,8,9,10,11,12,13,14 "Built target jetson_platform"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/yuanyang/powercap_orin_ws/build/CMakeFiles --progress-num=3,4,5,6,7,8,9,10,11,12,13,14,15 "Built target jetson_platform"
 .PHONY : CMakeFiles/jetson_platform.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/jetson_platform.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/yuanyang/powercap_orin_ws/build/CMakeFiles 12
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/yuanyang/powercap_orin_ws/build/CMakeFiles 13
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/jetson_platform.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/yuanyang/powercap_orin_ws/build/CMakeFiles 0
 .PHONY : CMakeFiles/jetson_platform.dir/rule
@@ -114,7 +114,7 @@ CMakeFiles/dvfs_tool.dir/all: CMakeFiles/jetson_platform.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/dvfs_tool.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/yuanyang/powercap_orin_ws/build/CMakeFiles 14
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/yuanyang/powercap_orin_ws/build/CMakeFiles 15
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/dvfs_tool.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/yuanyang/powercap_orin_ws/build/CMakeFiles 0
 .PHONY : CMakeFiles/dvfs_tool.dir/rule
