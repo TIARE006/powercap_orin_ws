@@ -8,11 +8,12 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/yuanyang/powercap_orin_ws/src/dvfs_tool.cpp" "CMakeFiles/dvfs_tool.dir/src/dvfs_tool.cpp.o" "gcc" "CMakeFiles/dvfs_tool.dir/src/dvfs_tool.cpp.o.d"
+  "/home/yuanyang/powercap_orin_ws/src/main.cpp" "CMakeFiles/dvfs_tool.dir/src/main.cpp.o" "gcc" "CMakeFiles/dvfs_tool.dir/src/main.cpp.o.d"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
+  "/home/yuanyang/powercap_orin_ws/build/CMakeFiles/jetson_platform.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

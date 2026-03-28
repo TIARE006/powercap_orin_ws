@@ -63,8 +63,8 @@ CMAKE_BINARY_DIR = /home/yuanyang/powercap_orin_ws/build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
+all: CMakeFiles/jetson_platform.dir/all
 all: CMakeFiles/dvfs_tool.dir/all
-all: CMakeFiles/ina260_logger.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -72,15 +72,41 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
+clean: CMakeFiles/jetson_platform.dir/clean
 clean: CMakeFiles/dvfs_tool.dir/clean
-clean: CMakeFiles/ina260_logger.dir/clean
 .PHONY : clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/jetson_platform.dir
+
+# All Build rule for target.
+CMakeFiles/jetson_platform.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/yuanyang/powercap_orin_ws/build/CMakeFiles --progress-num=3,4,5,6,7,8,9,10,11,12,13,14 "Built target jetson_platform"
+.PHONY : CMakeFiles/jetson_platform.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/jetson_platform.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/yuanyang/powercap_orin_ws/build/CMakeFiles 12
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/jetson_platform.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/yuanyang/powercap_orin_ws/build/CMakeFiles 0
+.PHONY : CMakeFiles/jetson_platform.dir/rule
+
+# Convenience name for target.
+jetson_platform: CMakeFiles/jetson_platform.dir/rule
+.PHONY : jetson_platform
+
+# clean rule for target.
+CMakeFiles/jetson_platform.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/clean
+.PHONY : CMakeFiles/jetson_platform.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/dvfs_tool.dir
 
 # All Build rule for target.
-CMakeFiles/dvfs_tool.dir/all:
+CMakeFiles/dvfs_tool.dir/all: CMakeFiles/jetson_platform.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/dvfs_tool.dir/build.make CMakeFiles/dvfs_tool.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/dvfs_tool.dir/build.make CMakeFiles/dvfs_tool.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/yuanyang/powercap_orin_ws/build/CMakeFiles --progress-num=1,2 "Built target dvfs_tool"
@@ -88,7 +114,7 @@ CMakeFiles/dvfs_tool.dir/all:
 
 # Build rule for subdir invocation for target.
 CMakeFiles/dvfs_tool.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/yuanyang/powercap_orin_ws/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/yuanyang/powercap_orin_ws/build/CMakeFiles 14
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/dvfs_tool.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/yuanyang/powercap_orin_ws/build/CMakeFiles 0
 .PHONY : CMakeFiles/dvfs_tool.dir/rule
@@ -101,32 +127,6 @@ dvfs_tool: CMakeFiles/dvfs_tool.dir/rule
 CMakeFiles/dvfs_tool.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/dvfs_tool.dir/build.make CMakeFiles/dvfs_tool.dir/clean
 .PHONY : CMakeFiles/dvfs_tool.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/ina260_logger.dir
-
-# All Build rule for target.
-CMakeFiles/ina260_logger.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ina260_logger.dir/build.make CMakeFiles/ina260_logger.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ina260_logger.dir/build.make CMakeFiles/ina260_logger.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/yuanyang/powercap_orin_ws/build/CMakeFiles --progress-num=3,4 "Built target ina260_logger"
-.PHONY : CMakeFiles/ina260_logger.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/ina260_logger.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/yuanyang/powercap_orin_ws/build/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/ina260_logger.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/yuanyang/powercap_orin_ws/build/CMakeFiles 0
-.PHONY : CMakeFiles/ina260_logger.dir/rule
-
-# Convenience name for target.
-ina260_logger: CMakeFiles/ina260_logger.dir/rule
-.PHONY : ina260_logger
-
-# clean rule for target.
-CMakeFiles/ina260_logger.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ina260_logger.dir/build.make CMakeFiles/ina260_logger.dir/clean
-.PHONY : CMakeFiles/ina260_logger.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

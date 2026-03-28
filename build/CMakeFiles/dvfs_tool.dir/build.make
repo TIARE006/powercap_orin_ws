@@ -69,29 +69,30 @@ include CMakeFiles/dvfs_tool.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/dvfs_tool.dir/flags.make
 
-CMakeFiles/dvfs_tool.dir/src/dvfs_tool.cpp.o: CMakeFiles/dvfs_tool.dir/flags.make
-CMakeFiles/dvfs_tool.dir/src/dvfs_tool.cpp.o: ../src/dvfs_tool.cpp
-CMakeFiles/dvfs_tool.dir/src/dvfs_tool.cpp.o: CMakeFiles/dvfs_tool.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/yuanyang/powercap_orin_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/dvfs_tool.dir/src/dvfs_tool.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/dvfs_tool.dir/src/dvfs_tool.cpp.o -MF CMakeFiles/dvfs_tool.dir/src/dvfs_tool.cpp.o.d -o CMakeFiles/dvfs_tool.dir/src/dvfs_tool.cpp.o -c /home/yuanyang/powercap_orin_ws/src/dvfs_tool.cpp
+CMakeFiles/dvfs_tool.dir/src/main.cpp.o: CMakeFiles/dvfs_tool.dir/flags.make
+CMakeFiles/dvfs_tool.dir/src/main.cpp.o: ../src/main.cpp
+CMakeFiles/dvfs_tool.dir/src/main.cpp.o: CMakeFiles/dvfs_tool.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/yuanyang/powercap_orin_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/dvfs_tool.dir/src/main.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/dvfs_tool.dir/src/main.cpp.o -MF CMakeFiles/dvfs_tool.dir/src/main.cpp.o.d -o CMakeFiles/dvfs_tool.dir/src/main.cpp.o -c /home/yuanyang/powercap_orin_ws/src/main.cpp
 
-CMakeFiles/dvfs_tool.dir/src/dvfs_tool.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/dvfs_tool.dir/src/dvfs_tool.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/yuanyang/powercap_orin_ws/src/dvfs_tool.cpp > CMakeFiles/dvfs_tool.dir/src/dvfs_tool.cpp.i
+CMakeFiles/dvfs_tool.dir/src/main.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/dvfs_tool.dir/src/main.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/yuanyang/powercap_orin_ws/src/main.cpp > CMakeFiles/dvfs_tool.dir/src/main.cpp.i
 
-CMakeFiles/dvfs_tool.dir/src/dvfs_tool.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/dvfs_tool.dir/src/dvfs_tool.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/yuanyang/powercap_orin_ws/src/dvfs_tool.cpp -o CMakeFiles/dvfs_tool.dir/src/dvfs_tool.cpp.s
+CMakeFiles/dvfs_tool.dir/src/main.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/dvfs_tool.dir/src/main.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/yuanyang/powercap_orin_ws/src/main.cpp -o CMakeFiles/dvfs_tool.dir/src/main.cpp.s
 
 # Object files for target dvfs_tool
 dvfs_tool_OBJECTS = \
-"CMakeFiles/dvfs_tool.dir/src/dvfs_tool.cpp.o"
+"CMakeFiles/dvfs_tool.dir/src/main.cpp.o"
 
 # External object files for target dvfs_tool
 dvfs_tool_EXTERNAL_OBJECTS =
 
-dvfs_tool: CMakeFiles/dvfs_tool.dir/src/dvfs_tool.cpp.o
+dvfs_tool: CMakeFiles/dvfs_tool.dir/src/main.cpp.o
 dvfs_tool: CMakeFiles/dvfs_tool.dir/build.make
+dvfs_tool: libjetson_platform.a
 dvfs_tool: CMakeFiles/dvfs_tool.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/yuanyang/powercap_orin_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable dvfs_tool"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/dvfs_tool.dir/link.txt --verbose=$(VERBOSE)

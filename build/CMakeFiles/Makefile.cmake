@@ -39,6 +39,6 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
+  "CMakeFiles/jetson_platform.dir/DependInfo.cmake"
   "CMakeFiles/dvfs_tool.dir/DependInfo.cmake"
-  "CMakeFiles/ina260_logger.dir/DependInfo.cmake"
   )

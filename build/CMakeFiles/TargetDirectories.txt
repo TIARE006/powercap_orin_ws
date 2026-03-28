@@ -1,4 +1,4 @@
+/home/yuanyang/powercap_orin_ws/build/CMakeFiles/jetson_platform.dir
 /home/yuanyang/powercap_orin_ws/build/CMakeFiles/dvfs_tool.dir
-/home/yuanyang/powercap_orin_ws/build/CMakeFiles/ina260_logger.dir
 /home/yuanyang/powercap_orin_ws/build/CMakeFiles/edit_cache.dir
 /home/yuanyang/powercap_orin_ws/build/CMakeFiles/rebuild_cache.dir

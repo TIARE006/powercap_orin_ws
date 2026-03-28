@@ -1,1 +1,1 @@
-/usr/bin/c++ CMakeFiles/dvfs_tool.dir/src/dvfs_tool.cpp.o -o dvfs_tool 
+/usr/bin/c++ CMakeFiles/dvfs_tool.dir/src/main.cpp.o -o dvfs_tool  libjetson_platform.a -lpthread 

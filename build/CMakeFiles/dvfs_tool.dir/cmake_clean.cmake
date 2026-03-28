@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/dvfs_tool.dir/src/dvfs_tool.cpp.o"
-  "CMakeFiles/dvfs_tool.dir/src/dvfs_tool.cpp.o.d"
+  "CMakeFiles/dvfs_tool.dir/src/main.cpp.o"
+  "CMakeFiles/dvfs_tool.dir/src/main.cpp.o.d"
   "dvfs_tool"
   "dvfs_tool.pdb"
 )

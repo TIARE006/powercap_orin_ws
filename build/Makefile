@@ -117,6 +117,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named jetson_platform
+
+# Build rule for target.
+jetson_platform: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 jetson_platform
+.PHONY : jetson_platform
+
+# fast build rule for target.
+jetson_platform/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/build
+.PHONY : jetson_platform/fast
+
+#=============================================================================
 # Target rules for targets named dvfs_tool
 
 # Build rule for target.
@@ -129,66 +142,293 @@ dvfs_tool/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/dvfs_tool.dir/build.make CMakeFiles/dvfs_tool.dir/build
 .PHONY : dvfs_tool/fast
 
-#=============================================================================
-# Target rules for targets named ina260_logger
-
-# Build rule for target.
-ina260_logger: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ina260_logger
-.PHONY : ina260_logger
-
-# fast build rule for target.
-ina260_logger/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ina260_logger.dir/build.make CMakeFiles/ina260_logger.dir/build
-.PHONY : ina260_logger/fast
-
-src/dvfs_tool.o: src/dvfs_tool.cpp.o
-.PHONY : src/dvfs_tool.o
+src/app/csv_logger.o: src/app/csv_logger.cpp.o
+.PHONY : src/app/csv_logger.o
 
 # target to build an object file
-src/dvfs_tool.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/dvfs_tool.dir/build.make CMakeFiles/dvfs_tool.dir/src/dvfs_tool.cpp.o
-.PHONY : src/dvfs_tool.cpp.o
+src/app/csv_logger.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/app/csv_logger.cpp.o
+.PHONY : src/app/csv_logger.cpp.o
 
-src/dvfs_tool.i: src/dvfs_tool.cpp.i
-.PHONY : src/dvfs_tool.i
+src/app/csv_logger.i: src/app/csv_logger.cpp.i
+.PHONY : src/app/csv_logger.i
 
 # target to preprocess a source file
-src/dvfs_tool.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/dvfs_tool.dir/build.make CMakeFiles/dvfs_tool.dir/src/dvfs_tool.cpp.i
-.PHONY : src/dvfs_tool.cpp.i
+src/app/csv_logger.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/app/csv_logger.cpp.i
+.PHONY : src/app/csv_logger.cpp.i
 
-src/dvfs_tool.s: src/dvfs_tool.cpp.s
-.PHONY : src/dvfs_tool.s
+src/app/csv_logger.s: src/app/csv_logger.cpp.s
+.PHONY : src/app/csv_logger.s
 
 # target to generate assembly for a file
-src/dvfs_tool.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/dvfs_tool.dir/build.make CMakeFiles/dvfs_tool.dir/src/dvfs_tool.cpp.s
-.PHONY : src/dvfs_tool.cpp.s
+src/app/csv_logger.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/app/csv_logger.cpp.s
+.PHONY : src/app/csv_logger.cpp.s
 
-src/ina260_logger.o: src/ina260_logger.cpp.o
-.PHONY : src/ina260_logger.o
+src/app/watch_renderer.o: src/app/watch_renderer.cpp.o
+.PHONY : src/app/watch_renderer.o
 
 # target to build an object file
-src/ina260_logger.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ina260_logger.dir/build.make CMakeFiles/ina260_logger.dir/src/ina260_logger.cpp.o
-.PHONY : src/ina260_logger.cpp.o
+src/app/watch_renderer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/app/watch_renderer.cpp.o
+.PHONY : src/app/watch_renderer.cpp.o
 
-src/ina260_logger.i: src/ina260_logger.cpp.i
-.PHONY : src/ina260_logger.i
+src/app/watch_renderer.i: src/app/watch_renderer.cpp.i
+.PHONY : src/app/watch_renderer.i
 
 # target to preprocess a source file
-src/ina260_logger.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ina260_logger.dir/build.make CMakeFiles/ina260_logger.dir/src/ina260_logger.cpp.i
-.PHONY : src/ina260_logger.cpp.i
+src/app/watch_renderer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/app/watch_renderer.cpp.i
+.PHONY : src/app/watch_renderer.cpp.i
 
-src/ina260_logger.s: src/ina260_logger.cpp.s
-.PHONY : src/ina260_logger.s
+src/app/watch_renderer.s: src/app/watch_renderer.cpp.s
+.PHONY : src/app/watch_renderer.s
 
 # target to generate assembly for a file
-src/ina260_logger.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ina260_logger.dir/build.make CMakeFiles/ina260_logger.dir/src/ina260_logger.cpp.s
-.PHONY : src/ina260_logger.cpp.s
+src/app/watch_renderer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/app/watch_renderer.cpp.s
+.PHONY : src/app/watch_renderer.cpp.s
+
+src/common/sysfs_io.o: src/common/sysfs_io.cpp.o
+.PHONY : src/common/sysfs_io.o
+
+# target to build an object file
+src/common/sysfs_io.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/common/sysfs_io.cpp.o
+.PHONY : src/common/sysfs_io.cpp.o
+
+src/common/sysfs_io.i: src/common/sysfs_io.cpp.i
+.PHONY : src/common/sysfs_io.i
+
+# target to preprocess a source file
+src/common/sysfs_io.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/common/sysfs_io.cpp.i
+.PHONY : src/common/sysfs_io.cpp.i
+
+src/common/sysfs_io.s: src/common/sysfs_io.cpp.s
+.PHONY : src/common/sysfs_io.s
+
+# target to generate assembly for a file
+src/common/sysfs_io.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/common/sysfs_io.cpp.s
+.PHONY : src/common/sysfs_io.cpp.s
+
+src/common/time_utils.o: src/common/time_utils.cpp.o
+.PHONY : src/common/time_utils.o
+
+# target to build an object file
+src/common/time_utils.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/common/time_utils.cpp.o
+.PHONY : src/common/time_utils.cpp.o
+
+src/common/time_utils.i: src/common/time_utils.cpp.i
+.PHONY : src/common/time_utils.i
+
+# target to preprocess a source file
+src/common/time_utils.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/common/time_utils.cpp.i
+.PHONY : src/common/time_utils.cpp.i
+
+src/common/time_utils.s: src/common/time_utils.cpp.s
+.PHONY : src/common/time_utils.s
+
+# target to generate assembly for a file
+src/common/time_utils.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/common/time_utils.cpp.s
+.PHONY : src/common/time_utils.cpp.s
+
+src/jetson/cpu_freq_device.o: src/jetson/cpu_freq_device.cpp.o
+.PHONY : src/jetson/cpu_freq_device.o
+
+# target to build an object file
+src/jetson/cpu_freq_device.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/jetson/cpu_freq_device.cpp.o
+.PHONY : src/jetson/cpu_freq_device.cpp.o
+
+src/jetson/cpu_freq_device.i: src/jetson/cpu_freq_device.cpp.i
+.PHONY : src/jetson/cpu_freq_device.i
+
+# target to preprocess a source file
+src/jetson/cpu_freq_device.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/jetson/cpu_freq_device.cpp.i
+.PHONY : src/jetson/cpu_freq_device.cpp.i
+
+src/jetson/cpu_freq_device.s: src/jetson/cpu_freq_device.cpp.s
+.PHONY : src/jetson/cpu_freq_device.s
+
+# target to generate assembly for a file
+src/jetson/cpu_freq_device.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/jetson/cpu_freq_device.cpp.s
+.PHONY : src/jetson/cpu_freq_device.cpp.s
+
+src/jetson/fan_device.o: src/jetson/fan_device.cpp.o
+.PHONY : src/jetson/fan_device.o
+
+# target to build an object file
+src/jetson/fan_device.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/jetson/fan_device.cpp.o
+.PHONY : src/jetson/fan_device.cpp.o
+
+src/jetson/fan_device.i: src/jetson/fan_device.cpp.i
+.PHONY : src/jetson/fan_device.i
+
+# target to preprocess a source file
+src/jetson/fan_device.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/jetson/fan_device.cpp.i
+.PHONY : src/jetson/fan_device.cpp.i
+
+src/jetson/fan_device.s: src/jetson/fan_device.cpp.s
+.PHONY : src/jetson/fan_device.s
+
+# target to generate assembly for a file
+src/jetson/fan_device.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/jetson/fan_device.cpp.s
+.PHONY : src/jetson/fan_device.cpp.s
+
+src/jetson/gpu_freq_device.o: src/jetson/gpu_freq_device.cpp.o
+.PHONY : src/jetson/gpu_freq_device.o
+
+# target to build an object file
+src/jetson/gpu_freq_device.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/jetson/gpu_freq_device.cpp.o
+.PHONY : src/jetson/gpu_freq_device.cpp.o
+
+src/jetson/gpu_freq_device.i: src/jetson/gpu_freq_device.cpp.i
+.PHONY : src/jetson/gpu_freq_device.i
+
+# target to preprocess a source file
+src/jetson/gpu_freq_device.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/jetson/gpu_freq_device.cpp.i
+.PHONY : src/jetson/gpu_freq_device.cpp.i
+
+src/jetson/gpu_freq_device.s: src/jetson/gpu_freq_device.cpp.s
+.PHONY : src/jetson/gpu_freq_device.s
+
+# target to generate assembly for a file
+src/jetson/gpu_freq_device.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/jetson/gpu_freq_device.cpp.s
+.PHONY : src/jetson/gpu_freq_device.cpp.s
+
+src/jetson/ina260_reader.o: src/jetson/ina260_reader.cpp.o
+.PHONY : src/jetson/ina260_reader.o
+
+# target to build an object file
+src/jetson/ina260_reader.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/jetson/ina260_reader.cpp.o
+.PHONY : src/jetson/ina260_reader.cpp.o
+
+src/jetson/ina260_reader.i: src/jetson/ina260_reader.cpp.i
+.PHONY : src/jetson/ina260_reader.i
+
+# target to preprocess a source file
+src/jetson/ina260_reader.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/jetson/ina260_reader.cpp.i
+.PHONY : src/jetson/ina260_reader.cpp.i
+
+src/jetson/ina260_reader.s: src/jetson/ina260_reader.cpp.s
+.PHONY : src/jetson/ina260_reader.s
+
+# target to generate assembly for a file
+src/jetson/ina260_reader.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/jetson/ina260_reader.cpp.s
+.PHONY : src/jetson/ina260_reader.cpp.s
+
+src/jetson/jetson_platform.o: src/jetson/jetson_platform.cpp.o
+.PHONY : src/jetson/jetson_platform.o
+
+# target to build an object file
+src/jetson/jetson_platform.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/jetson/jetson_platform.cpp.o
+.PHONY : src/jetson/jetson_platform.cpp.o
+
+src/jetson/jetson_platform.i: src/jetson/jetson_platform.cpp.i
+.PHONY : src/jetson/jetson_platform.i
+
+# target to preprocess a source file
+src/jetson/jetson_platform.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/jetson/jetson_platform.cpp.i
+.PHONY : src/jetson/jetson_platform.cpp.i
+
+src/jetson/jetson_platform.s: src/jetson/jetson_platform.cpp.s
+.PHONY : src/jetson/jetson_platform.s
+
+# target to generate assembly for a file
+src/jetson/jetson_platform.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/jetson/jetson_platform.cpp.s
+.PHONY : src/jetson/jetson_platform.cpp.s
+
+src/jetson/tegrastats_monitor.o: src/jetson/tegrastats_monitor.cpp.o
+.PHONY : src/jetson/tegrastats_monitor.o
+
+# target to build an object file
+src/jetson/tegrastats_monitor.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/jetson/tegrastats_monitor.cpp.o
+.PHONY : src/jetson/tegrastats_monitor.cpp.o
+
+src/jetson/tegrastats_monitor.i: src/jetson/tegrastats_monitor.cpp.i
+.PHONY : src/jetson/tegrastats_monitor.i
+
+# target to preprocess a source file
+src/jetson/tegrastats_monitor.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/jetson/tegrastats_monitor.cpp.i
+.PHONY : src/jetson/tegrastats_monitor.cpp.i
+
+src/jetson/tegrastats_monitor.s: src/jetson/tegrastats_monitor.cpp.s
+.PHONY : src/jetson/tegrastats_monitor.s
+
+# target to generate assembly for a file
+src/jetson/tegrastats_monitor.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/jetson/tegrastats_monitor.cpp.s
+.PHONY : src/jetson/tegrastats_monitor.cpp.s
+
+src/jetson/thermal_sensor.o: src/jetson/thermal_sensor.cpp.o
+.PHONY : src/jetson/thermal_sensor.o
+
+# target to build an object file
+src/jetson/thermal_sensor.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/jetson/thermal_sensor.cpp.o
+.PHONY : src/jetson/thermal_sensor.cpp.o
+
+src/jetson/thermal_sensor.i: src/jetson/thermal_sensor.cpp.i
+.PHONY : src/jetson/thermal_sensor.i
+
+# target to preprocess a source file
+src/jetson/thermal_sensor.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/jetson/thermal_sensor.cpp.i
+.PHONY : src/jetson/thermal_sensor.cpp.i
+
+src/jetson/thermal_sensor.s: src/jetson/thermal_sensor.cpp.s
+.PHONY : src/jetson/thermal_sensor.s
+
+# target to generate assembly for a file
+src/jetson/thermal_sensor.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jetson_platform.dir/build.make CMakeFiles/jetson_platform.dir/src/jetson/thermal_sensor.cpp.s
+.PHONY : src/jetson/thermal_sensor.cpp.s
+
+src/main.o: src/main.cpp.o
+.PHONY : src/main.o
+
+# target to build an object file
+src/main.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dvfs_tool.dir/build.make CMakeFiles/dvfs_tool.dir/src/main.cpp.o
+.PHONY : src/main.cpp.o
+
+src/main.i: src/main.cpp.i
+.PHONY : src/main.i
+
+# target to preprocess a source file
+src/main.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dvfs_tool.dir/build.make CMakeFiles/dvfs_tool.dir/src/main.cpp.i
+.PHONY : src/main.cpp.i
+
+src/main.s: src/main.cpp.s
+.PHONY : src/main.s
+
+# target to generate assembly for a file
+src/main.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dvfs_tool.dir/build.make CMakeFiles/dvfs_tool.dir/src/main.cpp.s
+.PHONY : src/main.cpp.s
 
 # Help Target
 help:
@@ -199,13 +439,43 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... dvfs_tool"
-	@echo "... ina260_logger"
-	@echo "... src/dvfs_tool.o"
-	@echo "... src/dvfs_tool.i"
-	@echo "... src/dvfs_tool.s"
-	@echo "... src/ina260_logger.o"
-	@echo "... src/ina260_logger.i"
-	@echo "... src/ina260_logger.s"
+	@echo "... jetson_platform"
+	@echo "... src/app/csv_logger.o"
+	@echo "... src/app/csv_logger.i"
+	@echo "... src/app/csv_logger.s"
+	@echo "... src/app/watch_renderer.o"
+	@echo "... src/app/watch_renderer.i"
+	@echo "... src/app/watch_renderer.s"
+	@echo "... src/common/sysfs_io.o"
+	@echo "... src/common/sysfs_io.i"
+	@echo "... src/common/sysfs_io.s"
+	@echo "... src/common/time_utils.o"
+	@echo "... src/common/time_utils.i"
+	@echo "... src/common/time_utils.s"
+	@echo "... src/jetson/cpu_freq_device.o"
+	@echo "... src/jetson/cpu_freq_device.i"
+	@echo "... src/jetson/cpu_freq_device.s"
+	@echo "... src/jetson/fan_device.o"
+	@echo "... src/jetson/fan_device.i"
+	@echo "... src/jetson/fan_device.s"
+	@echo "... src/jetson/gpu_freq_device.o"
+	@echo "... src/jetson/gpu_freq_device.i"
+	@echo "... src/jetson/gpu_freq_device.s"
+	@echo "... src/jetson/ina260_reader.o"
+	@echo "... src/jetson/ina260_reader.i"
+	@echo "... src/jetson/ina260_reader.s"
+	@echo "... src/jetson/jetson_platform.o"
+	@echo "... src/jetson/jetson_platform.i"
+	@echo "... src/jetson/jetson_platform.s"
+	@echo "... src/jetson/tegrastats_monitor.o"
+	@echo "... src/jetson/tegrastats_monitor.i"
+	@echo "... src/jetson/tegrastats_monitor.s"
+	@echo "... src/jetson/thermal_sensor.o"
+	@echo "... src/jetson/thermal_sensor.i"
+	@echo "... src/jetson/thermal_sensor.s"
+	@echo "... src/main.o"
+	@echo "... src/main.i"
+	@echo "... src/main.s"
 .PHONY : help
 
 
