@@ -21,6 +21,7 @@ public:
     void stop_monitors();
 
     PlatformSample sample();
+    PlatformSample sample_minimal();   // 新增：高频模式，只读最核心数据
 
     bool set_dvfs(const DvfsCommand& cmd);
     bool unlock_dvfs();

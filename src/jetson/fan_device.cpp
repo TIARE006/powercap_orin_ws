@@ -19,7 +19,7 @@ std::optional<FanDevice> FanDevice::discover() {
 
         auto type = common::SysfsIO::read_text(d + "/type");
         if (type && type->find("pwm-fan") != std::string::npos) {
-            return FanDevice(d, "/sys/devices/platform/pwm-fan/hwmon/hwmon1/pwm1");
+            return FanDevice(d, "/sys/devices/platform/pwm-fan/hwmon/hwmon0/pwm1");
         }
     }
     return std::nullopt;

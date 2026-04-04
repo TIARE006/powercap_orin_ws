@@ -47,6 +47,7 @@ void JetsonPlatform::stop_monitors() {
 PlatformSample JetsonPlatform::sample() {
     PlatformSample s;
     s.ts_ns = common::now_ns();
+
     s.cpu = cpu_.read_state();
     s.gpu = gpu_.read_state();
 
@@ -57,6 +58,19 @@ PlatformSample JetsonPlatform::sample() {
     for (const auto& t : thermals_) {
         s.thermal.zones.push_back(t.read());
     }
+
+    if (tegrastats_) {
+        s.power.tegrastats = tegrastats_->latest();
+    }
+
+    s.power.ina260 = ina260_.read_sample();
+    return s;
+}
+
+// 新增：高频最小采样路径
+PlatformSample JetsonPlatform::sample_minimal() {
+    PlatformSample s;
+    s.ts_ns = common::now_ns();
 
     if (tegrastats_) {
         s.power.tegrastats = tegrastats_->latest();

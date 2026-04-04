@@ -16,7 +16,7 @@ static void usage() {
     std::cout <<
 R"(Usage:
   dvfs_tool probe
-  dvfs_tool log --out <csv> --period_ms <ms> [--watch]
+  dvfs_tool log --out <csv> --period_ms <ms> [--watch] [--with-jtop] [--minimal]
   sudo dvfs_tool set --cpu_khz <kHz> --gpu_hz <Hz>
   sudo dvfs_tool unlock
 )";
@@ -70,12 +70,21 @@ int main(int argc, char** argv) {
         std::string out = "logs/run.csv";
         int period_ms = 100;
         bool watch = false;
+        bool with_jtop = false;
+        bool minimal = false;
 
         for (int i = 2; i < argc; ++i) {
             std::string a = argv[i];
             if (a == "--out" && i + 1 < argc) out = argv[++i];
             else if (a == "--period_ms" && i + 1 < argc) period_ms = std::stoi(argv[++i]);
             else if (a == "--watch") watch = true;
+            else if (a == "--with-jtop") with_jtop = true;
+            else if (a == "--minimal") minimal = true;
+        }
+
+        if (minimal) {
+            watch = false;
+            with_jtop = false;
         }
 
         std::filesystem::path out_path(out);
@@ -88,14 +97,18 @@ int main(int argc, char** argv) {
         platform->start_monitors(period_ms);
 
         jetson::JtopReader jtop_reader;
-        if (!jtop_reader.start("python3 /home/yuanyang/powercap_orin_ws/scripts/jtop_probe.py")) {
-            std::cerr << "Warning: failed to start jtop reader, continuing without jtop\n";
+        bool jtop_ok = false;
+        if (with_jtop) {
+            jtop_ok = jtop_reader.start("python3 /home/yuanyang/powercap_orin_ws/scripts/jtop_probe.py");
+            if (!jtop_ok) {
+                std::cerr << "Warning: failed to start jtop reader, continuing without jtop\n";
+            }
         }
 
         app::CsvLogger logger(out);
         if (!logger.ok()) {
             std::cerr << "Failed to open log file: " << out << "\n";
-            jtop_reader.stop();
+            if (jtop_ok) jtop_reader.stop();
             platform->stop_monitors();
             return 4;
         }
@@ -104,20 +117,39 @@ int main(int argc, char** argv) {
         app::WatchRenderer renderer;
         auto next = std::chrono::steady_clock::now();
 
+        std::uint64_t loop_count = 0;
+        auto t0 = std::chrono::steady_clock::now();
+
         while (!g_stop) {
             next += std::chrono::milliseconds(period_ms);
 
-            auto s = platform->sample();
-            auto jt = jtop_reader.latest();
+            auto s = minimal ? platform->sample_minimal() : platform->sample();
 
-            logger.write_sample(s, jt);
+            if (with_jtop && !minimal) {
+                auto jt = jtop_reader.latest();
+                logger.write_sample(s, jt);
+                if (watch) renderer.render(s, jt);
+            } else {
+                logger.write_sample(s);
+                if (watch) {
+                    jetson::JtopSample jt{};
+                    renderer.render(s, jt);
+                }
+            }
 
-            if (watch) renderer.render(s, jt);
-
+            ++loop_count;
             std::this_thread::sleep_until(next);
         }
 
-        jtop_reader.stop();
+        auto t1 = std::chrono::steady_clock::now();
+        double elapsed_s = std::chrono::duration<double>(t1 - t0).count();
+        double eff_hz = (elapsed_s > 0.0)
+            ? (static_cast<double>(loop_count) / elapsed_s)
+            : 0.0;
+
+        std::cout << "\nEffective loop rate: " << eff_hz << " Hz\n";
+
+        if (jtop_ok) jtop_reader.stop();
         platform->stop_monitors();
         return 0;
     }

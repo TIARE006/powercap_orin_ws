@@ -37,10 +37,9 @@ bool TegrastatsMonitor::start(int interval_ms) {
 }
 
 void TegrastatsMonitor::stop() {
+    if (!running_) return;
     running_ = false;
-    if (worker_.joinable()) {
-        worker_.join();
-    }
+    if (worker_.joinable()) worker_.join();
 }
 
 TegrastatsPower TegrastatsMonitor::latest() const {
