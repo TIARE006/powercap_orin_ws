@@ -1,0 +1,11 @@
+[jpm] loading module: /home/yuanyang/runtime_monitor.ko
+[jpm] bus_num=-1 i2c_addr=-1 period_ms=10 skip_bus_mask=0x20
+[jpm] sysfs: /sys/kernel/runtime_monitor
+[jpm] selected_bus=7
+[jpm] selected_i2c_addr=0x40
+[jpm] skip_bus_mask=0x20
+[jpm] logging to log.csv
+[jpm] interval_ms=10 duration_sec=10
+t=   0.000s power= 6680 mW voltage= 19243 mV current= 347 mA status=0 age=4 ms
+[jpm] logging finished
+[jpm] unloading runtime_monitor
